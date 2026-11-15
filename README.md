@@ -118,6 +118,11 @@ npm run build
 npm start        # http://localhost:3000 — wait for "Offline ready" before disconnecting
 ```
 
+> **Clone size, honestly:** the repository is ~30 MB because the offline build (`web/`, 24 MB) and
+> the two films are committed on purpose — a reviewer can open the app with no toolchain. If you
+> only want the source: `git clone --depth 1` (still includes them) or
+> `git clone --filter=blob:none`.
+
 No Node? The repository also contains a prebuilt `web/` directory:
 
 ```bash
@@ -200,20 +205,20 @@ medical information.
 
 ## Documentation
 
-| Document                                                   | Contents                                                                                      |
-| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [SUBMISSION.md](SUBMISSION.md)                             | Judging brief: what this is, how it maps to the criteria, demo path                           |
-| [docs/METHODOLOGY.md](docs/METHODOLOGY.md)                 | Baseline math, thresholds, units, direction rules, limitations                                |
-| [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md)         | Where every byte came from and how to refresh it                                              |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)                   | Local, static, Node and Vercel deployment; offline behaviour                                  |
-| [docs/TEST-REPORT.md](docs/TEST-REPORT.md)                 | Executed tests, scope and honest coverage gaps                                                |
-| [docs/SECURITY.md](docs/SECURITY.md)                       | Threat model, data handling, known limitations                                                |
-| [docs/DEMO-SCRIPT.md](docs/DEMO-SCRIPT.md)                 | Live walkthrough, the recorded 30-second film, a re-record plan and the seven-slide deck      |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)               | Modules, data flow, trust boundaries, build pipeline                                          |
-| [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md)             | Implemented affordances, measured contrast, unverified gaps                                   |
-| [docs/THIRD-PARTY-NOTICES.md](docs/THIRD-PARTY-NOTICES.md) | Library, font and dataset notices                                                             |
-| [docs/JUDGES-RESOURCES.md](docs/JUDGES-RESOURCES.md)       | Judges' hub: brief, four dossiers, [ZIP](public/docs/PROHOR_Judges_Library.zip), regeneration |
-| [docs/demo/PROHOR-deck.pdf](docs/demo/PROHOR-deck.pdf)     | Seven-slide presentation, one page per demo step                                              |
+| Document                                                                                           | Contents                                                                                                                    |
+| -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| [SUBMISSION.md](SUBMISSION.md)                                                                     | Judging brief: what this is, how it maps to the criteria, demo path                                                         |
+| [docs/METHODOLOGY.md](docs/METHODOLOGY.md)                                                         | Baseline math, thresholds, units, direction rules, limitations                                                              |
+| [docs/DATA-PROVENANCE.md](docs/DATA-PROVENANCE.md)                                                 | Where every byte came from and how to refresh it                                                                            |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)                                                           | Local, static, Node and Vercel deployment; offline behaviour                                                                |
+| [docs/TEST-REPORT.md](docs/TEST-REPORT.md)                                                         | Executed tests, scope and honest coverage gaps                                                                              |
+| [docs/SECURITY.md](docs/SECURITY.md)                                                               | Threat model, data handling, known limitations                                                                              |
+| [docs/DEMO-SCRIPT.md](docs/DEMO-SCRIPT.md)                                                         | Live walkthrough, the recorded 30-second film, a re-record plan and the seven-slide deck                                    |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)                                                       | Modules, data flow, trust boundaries, build pipeline                                                                        |
+| [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md)                                                     | Implemented affordances, measured contrast, unverified gaps                                                                 |
+| [docs/THIRD-PARTY-NOTICES.md](docs/THIRD-PARTY-NOTICES.md)                                         | Library, font and dataset notices                                                                                           |
+| [docs/JUDGES-RESOURCES.md](docs/JUDGES-RESOURCES.md)                                               | Judges' hub: brief, four dossiers, [ZIP](public/docs/PROHOR_Judges_Library.zip), regeneration                               |
+| [public/docs/PROHOR_Seven_Slide_Presentation.pdf](public/docs/PROHOR_Seven_Slide_Presentation.pdf) | The seven-slide submission deck (531 KB) — the only current deck; older ones are in [docs/archive/](docs/archive/README.md) |
 
 ## AI assistance
 

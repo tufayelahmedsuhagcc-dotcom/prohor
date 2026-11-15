@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowLeft,
@@ -106,10 +106,30 @@ export function ProjectVideo({
   const title = isShort
     ? "30-second project pitch"
     : "Four-minute judging film";
+  const [offline, setOffline] = useState(
+    typeof navigator !== "undefined" && navigator.onLine === false,
+  );
+  useEffect(() => {
+    const sync = () => setOffline(!navigator.onLine);
+    window.addEventListener("online", sync);
+    window.addEventListener("offline", sync);
+    return () => {
+      window.removeEventListener("online", sync);
+      window.removeEventListener("offline", sync);
+    };
+  }, []);
   return (
     <article
       className={`project-video ${compact ? "project-video-compact" : ""}`}
     >
+      {offline && !isShort && (
+        <p className="video-offline" role="status">
+          You are offline. The four-minute film streams on demand, so it will
+          not play here — read the{" "}
+          <a href={`/media/${name}-transcript.txt`}>full transcript</a> instead.
+          The 30-second pitch below is cached and still plays.
+        </p>
+      )}
       <div className="video-frame">
         <video
           controls
@@ -146,8 +166,9 @@ export function ProjectVideo({
           </a>
         </div>
         <p className="video-note">
-          English captions are embedded. Videos require a network connection and
-          are not cached for offline playback.
+          English captions are embedded. The 30-second pitch is cached for
+          offline playback; the four-minute film streams on demand and needs a
+          connection — its transcript is always available offline.
         </p>
       </div>
     </article>

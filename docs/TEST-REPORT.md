@@ -5,6 +5,16 @@ The full suite is reproducible with the commands in [the README](../README.md#ve
 Passing these scans is not formal accessibility certification and says nothing about clinical
 effectiveness.
 
+## 2026-11-15 · latest continuous-integration run on `main`
+
+- Run: [actions/runs/43692837051](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43692837051)
+  on commit `a5b300b` — **verify: success** (format, typecheck, 128 tests, build, committed-build
+  parity, offline feed smoke) and **browser smoke: success** (Playwright workflows on `OFFLINE=1`
+  snapshots). The accessibility job is `workflow_dispatch`-only and was not dispatched, so it shows
+  as skipped — that is a scope setting, not a pass.
+- Rows below whose dates are earlier describe earlier revisions. They are kept on purpose so a
+  reader can see what was measured when, rather than one merged number with no provenance.
+
 ## 2026-11-12 · review branch `review/2026-11-12-hardening` (from `7f14346`)
 
 Environment: Linux container, Node v20.20.2, npm 10.8.2, Python 3.13.18, no root. Recording the

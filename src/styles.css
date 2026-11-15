@@ -4769,3 +4769,40 @@ html[data-motion="reduced"] *::after {
     justify-content: center;
   }
 }
+
+/* Offline notice for the streamed film: honest about what will not play. */
+.video-offline {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--watch-line, #f0dcc0);
+  border-radius: 10px;
+  background: var(--watch-bg, #fff6e8);
+  color: var(--watch-ink, #765323);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.video-offline a {
+  color: inherit;
+  font-weight: 600;
+}
+
+.view-loading {
+  margin: 24px 0;
+  color: var(--muted, #5c7065);
+  font-size: 14px;
+}
+
+/* Team list on About: names, not job titles. */
+.team-list {
+  margin: 10px 0 6px;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.hero-bangla {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: var(--muted, #5c7065);
+}

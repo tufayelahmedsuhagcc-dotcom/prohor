@@ -229,6 +229,9 @@ export function Overview() {
             <br className="mobile-only" /> <span>A little closer to you.</span>
           </h1>
           <p>Your readings. Your baseline. A clearer next step.</p>
+          <p className="hero-bangla" lang="bn">
+            মহাকাশে নিজের স্বাস্থ্য নিজে বুঝুন — PROHOR
+          </p>
         </div>
         <button
           className="button secondary"

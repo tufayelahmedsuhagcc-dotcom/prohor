@@ -43,7 +43,7 @@ endobj
 6 0 obj
 <<
 /A <<
-/S /URI /Type /Action /URI (https://prohor-rho.vercel.app/)
+/S /URI /Type /Action /URI (https://prohor.health/)
 >> /Border [ 0 0 0 ] /Rect [ 61.6248 298.2098 122.5699 308.2898 ] /Subtype /Link /Type /Annot
 >>
 endobj
@@ -313,7 +313,7 @@ endobj
 endobj
 19 0 obj
 <<
-/Author (Skorpe Monad) /CreationDate (D:20261113081844+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20261113081844+00'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+/Author (Skorpe Monad) /CreationDate (D:20261115080909+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20261115080909+00'00') /Producer (ReportLab PDF Library - \(opensource\)) 
   /Subject (\(unspecified\)) /Title (PROHOR Judges Library \204 01) /Trapped /False
 >>
 endobj
@@ -352,27 +352,27 @@ xref
 0000000430 00000 n 
 0000037933 00000 n 
 0000038201 00000 n 
-0000038382 00000 n 
-0000038611 00000 n 
-0000038814 00000 n 
-0000039049 00000 n 
-0000039809 00000 n 
-0000058122 00000 n 
-0000058392 00000 n 
-0000059746 00000 n 
-0000060514 00000 n 
-0000079493 00000 n 
-0000079752 00000 n 
-0000081087 00000 n 
-0000081157 00000 n 
-0000081453 00000 n 
-0000081525 00000 n 
-0000083508 00000 n 
-0000085820 00000 n 
+0000038374 00000 n 
+0000038603 00000 n 
+0000038806 00000 n 
+0000039041 00000 n 
+0000039801 00000 n 
+0000058114 00000 n 
+0000058384 00000 n 
+0000059738 00000 n 
+0000060506 00000 n 
+0000079485 00000 n 
+0000079744 00000 n 
+0000081079 00000 n 
+0000081149 00000 n 
+0000081445 00000 n 
+0000081517 00000 n 
+0000083500 00000 n 
+0000085812 00000 n 
 trailer
 <<
 /ID 
-[<7239a4c081be4f7fc0c7a50c040c2536><7239a4c081be4f7fc0c7a50c040c2536>]
+[<a722e174073fddea888ed7344d07a546><a722e174073fddea888ed7344d07a546>]
 % ReportLab generated PDF document -- digest (opensource)
 
 /Info 19 0 R
@@ -380,5 +380,5 @@ trailer
 /Size 24
 >>
 startxref
-87814
+87806
 %%EOF

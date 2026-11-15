@@ -16,9 +16,9 @@ export function About() {
       <div className="about-hero">
         <span className="eyebrow">PROHOR / PERSONAL HEALTH INTELLIGENCE</span>
         <h1>
-          A quiet watch.
+          A little farther from Earth.
           <br />
-          <span>For a long journey.</span>
+          <span>A little closer to you.</span>
         </h1>
         <p>
           Far from Earth, a reading is only useful if you can understand it.
@@ -36,6 +36,37 @@ export function About() {
         system.
       </Notice>
       <div className="two-columns">
+        <Panel>
+          <SectionHead eyebrow="THE TEAM" title="Skorpe Monad" />
+          <p>
+            Five people from Sylhet, Bangladesh, building toward the 2026 NASA
+            Space Apps Challenge. Named here because a prototype is only
+            reviewable if you know who made it.
+          </p>
+          <ul className="team-list">
+            <li>
+              <strong>Tufayel Ahmed</strong> — team lead, main developer and
+              designer
+            </li>
+            <li>
+              <strong>Annapurna Das Protyasha</strong> — researcher, concept
+            </li>
+            <li>
+              <strong>Rakthim Deb Rudro</strong> — advisor, methodological
+              review
+            </li>
+            <li>
+              <strong>Mir Shahi Ahmad</strong> — data scientist
+            </li>
+            <li>
+              <strong>Tonusri Deb Diggi</strong> — video and photo editor
+            </li>
+          </ul>
+          <p className="muted-note">
+            Roles, not job titles: one person can hold two of these on any given
+            night. AI assistance is disclosed separately below.
+          </p>
+        </Panel>
         <Panel>
           <SectionHead
             eyebrow="THE CHALLENGE"

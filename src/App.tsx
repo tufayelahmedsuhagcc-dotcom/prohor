@@ -1,4 +1,11 @@
-import { useEffect, useState, Component, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useState,
+  Component,
+  type ReactNode,
+} from "react";
 import {
   LayoutDashboard,
   ScanLine,
@@ -27,16 +34,36 @@ import { useProhor } from "./lib/context";
 import { Modal, Notice } from "./components/UI";
 import { LogModal } from "./components/LogModal";
 import { Overview, AtlasPanel } from "./pages/Overview";
-import { Trends } from "./pages/Trends";
-import { Logbook } from "./pages/Logbook";
-import { Actions } from "./pages/Actions";
-import { Evidence } from "./pages/Evidence";
-import { Environment } from "./pages/Environment";
-import { Replay } from "./pages/Replay";
-import { Handover } from "./pages/Handover";
-import { Settings } from "./pages/Settings";
-import { About } from "./pages/About";
-import { Judges } from "./pages/Judges";
+const Trends = lazy(() =>
+  import("./pages/Trends").then((m) => ({ default: m.Trends })),
+);
+const Logbook = lazy(() =>
+  import("./pages/Logbook").then((m) => ({ default: m.Logbook })),
+);
+const Actions = lazy(() =>
+  import("./pages/Actions").then((m) => ({ default: m.Actions })),
+);
+const Evidence = lazy(() =>
+  import("./pages/Evidence").then((m) => ({ default: m.Evidence })),
+);
+const Environment = lazy(() =>
+  import("./pages/Environment").then((m) => ({ default: m.Environment })),
+);
+const Replay = lazy(() =>
+  import("./pages/Replay").then((m) => ({ default: m.Replay })),
+);
+const Handover = lazy(() =>
+  import("./pages/Handover").then((m) => ({ default: m.Handover })),
+);
+const Settings = lazy(() =>
+  import("./pages/Settings").then((m) => ({ default: m.Settings })),
+);
+const About = lazy(() =>
+  import("./pages/About").then((m) => ({ default: m.About })),
+);
+const Judges = lazy(() =>
+  import("./pages/Judges").then((m) => ({ default: m.Judges })),
+);
 const NAV = [
   {
     title: "CREW WORKSPACE",
@@ -440,7 +467,15 @@ export default function App() {
             </Notice>
           )}
           <ErrorBoundary key={c.page}>
-            {views[c.page] || <Overview />}
+            <Suspense
+              fallback={
+                <p className="view-loading" role="status">
+                  Loading this view…
+                </p>
+              }
+            >
+              {views[c.page] || <Overview />}
+            </Suspense>
           </ErrorBoundary>
         </main>
         <footer className="app-footer">
