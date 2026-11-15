@@ -2,6 +2,20 @@
 
 Notes describe the shipped application. Release dates are deliberately omitted; the git history is the timeline.
 
+## Unreleased — submission hardening
+
+- **Security headers, tested rather than hoped for.** The catch-all rule now sends a
+  `Content-Security-Policy` (`default-src 'self'`, one `sha256-` hash for the inline theme script,
+  `frame-ancestors 'none'`, `object-src 'none'`, `form-action 'none'`), `X-Frame-Options: SAMEORIGIN`
+  and a `Permissions-Policy` that switches off camera, microphone, geolocation and payment. The local
+  server replays the same rules out of `vercel.json`, so the Playwright job exercises the production
+  policy; a unit test fails if the hash stops matching the built page.
+- Judge-facing documents stop contradicting the build: the submission sheet, the judges' resource page
+  and the README described 128 tests, a video that was not yet published and films that always need a
+  connection. They now say 222 tests in 8 files, the pitch cached and playing offline, and
+  captions from a `.vtt` track. The stale `RELEASE-NOTES-3.1.0-draft.md`, which announced itself as
+  unpublished, is deleted, and TEST-REPORT opens with the final run and the axe gap stated plainly.
+
 ## Unreleased — team section, video fixes and real captions
 
 - **The team is a section of its own on About.** Five cards — initials, name, role, and what each

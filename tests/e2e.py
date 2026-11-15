@@ -17,6 +17,10 @@ async def main():
   async def openlog():
    await page.get_by_role('button',name='Log a reading',exact=True).first.click()
    await page.locator('dialog[open]').wait_for()
+  first=await page.goto(URL+'/',wait_until='domcontentloaded')
+  hdr={k.lower():v for k,v in first.headers.items()}
+  check('Content-Security-Policy ships with the page',"frame-ancestors 'none'" in hdr.get('content-security-policy','') and "sha256-" in hdr.get('content-security-policy',''),hdr.get('content-security-policy','')[:90])
+  check('Framing and unused devices are refused',hdr.get('x-frame-options','')=='SAMEORIGIN' and 'camera=()' in hdr.get('permissions-policy',''),hdr.get('x-frame-options',''))
   await go('overview');await page.evaluate('navigator.serviceWorker.ready');await page.wait_for_function('!!navigator.serviceWorker.controller')
   check('Production service worker controls the page',await page.evaluate('!!navigator.serviceWorker.controller'))
   check('Default view labels the simulation',await page.get_by_text('Generated crew readings. Not real astronaut records.',exact=True).is_visible())

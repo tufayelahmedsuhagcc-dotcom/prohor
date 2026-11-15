@@ -19,6 +19,12 @@ Browser workflow tests recorded zero health-record POST requests. That observati
 
 ## Protections implemented
 
+- Response headers set in `vercel.json` and replayed by the local server: a `Content-Security-Policy`
+  that allows only same-origin scripts plus one hash for the inline theme script, `frame-ancestors
+'none'`, `object-src 'none'`, `form-action 'none'`, `X-Frame-Options: SAMEORIGIN`,
+  `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, and a
+  `Permissions-Policy` that turns off camera, microphone, geolocation and payment.
+
 - Zod schema and version validation; finite-number, range, unit and timestamp checks.
 - Atomic CSV validation before import and explicit JSON replacement/deletion confirmation.
 - Spreadsheet formula escaping on CSV export.

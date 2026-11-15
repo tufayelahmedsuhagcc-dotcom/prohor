@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { ROUTE_MODULES } from "../src/lib/prefetch";
 
@@ -328,5 +329,40 @@ describe("video captions", () => {
     ) as string[];
     expect(warm.some((f) => f.endsWith(".srt"))).toBe(true);
     expect(warm.some((f) => f.endsWith(".vtt"))).toBe(true);
+  });
+});
+
+describe("security headers", () => {
+  const catchAll = vercel.headers.find((rule) => rule.source === "/(.*)")!;
+  const header = (name: string) =>
+    catchAll.headers.find((h) => h.key.toLowerCase() === name)?.value ?? "";
+  const inlineScript = () =>
+    read("web/index.html").match(/<script>(.*?)<\/script>/s)![1];
+
+  it("pins the content-security-policy to the one inline script that exists", () => {
+    const csp = header("content-security-policy");
+    expect(csp).toContain("frame-ancestors 'none'");
+    expect(csp).toContain("object-src 'none'");
+    expect(csp).not.toContain("unsafe-eval");
+    // The pre-paint theme script is inline, so its hash has to match the built
+    // page exactly or dark mode silently stops being applied.
+    const digest = createHash("sha256").update(inlineScript()).digest("base64");
+    expect(csp).toContain(`'sha256-${digest}'`);
+    expect(csp).toContain("script-src 'self'");
+    expect(csp).toContain("connect-src 'self'");
+  });
+
+  it("refuses framing and turns off devices the app never uses", () => {
+    expect(header("x-frame-options")).toBe("SAMEORIGIN");
+    const policy = header("permissions-policy");
+    for (const device of ["camera", "microphone", "geolocation"])
+      expect(policy).toContain(`${device}=()`);
+  });
+
+  it("serves the same policy from the local server the browser tests use", () => {
+    // Otherwise a CSP that breaks the app would only show up in production.
+    const server = read("server/start.mjs");
+    expect(server).toContain('"../vercel.json"');
+    expect(server).toContain("cache-control");
   });
 });

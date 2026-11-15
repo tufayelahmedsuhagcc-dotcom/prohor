@@ -159,6 +159,17 @@ Measured effects, same machine, `npm run build`:
 | Initial JS + CSS 144.7 KB gzip, in one 422 KB JS file that changes when app code changes | 138.7 KB gzip across five chunks; `papaparse` (7 KB gzip) off the first-load path, React and zod in chunks an app-only deploy does not rename |
 | A failed optional file breaks the whole install                                          | Only a missing shell fails install                                                                                                            |
 
+**Security headers.** The catch-all rule also sends `X-Content-Type-Options: nosniff`,
+`Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: SAMEORIGIN`,
+`Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()` and a
+`Content-Security-Policy` of `default-src 'self'` with `script-src 'self' 'sha256-…'` for the single
+inline pre-paint theme script, `frame-ancestors 'none'`, `object-src 'none'` and `form-action 'none'`.
+Two consequences worth knowing: **that hash is tied to the inline script in `index.html`**, so editing
+it means recomputing the hash (`tests/performance.test.ts` fails until the two match), and **any script
+added by the host, such as Vercel Web Analytics, would be blocked** unless the policy is extended.
+`server/start.mjs` reads the same rules out of `vercel.json`, minus `Cache-Control`, so the Playwright
+job runs the app under the production policy instead of discovering a breakage after deploy.
+
 **Checked against the live deployment** (`dpl_CifKoWRJ8DWLVALR7gjP3w7diHQm`, commit `691af85`):
 
 | Request              | `cache-control` returned                             |

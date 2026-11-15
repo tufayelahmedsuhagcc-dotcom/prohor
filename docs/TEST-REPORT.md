@@ -8,7 +8,7 @@ effectiveness.
 ## 2026-11-15 · final submission run on `main`
 
 - Run: [actions/runs/43720242300](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43720242300)
-  on commit `fde9903` — **verify: success** (format, typecheck, **219 tests in 8 files**, build,
+  on commit `fde9903` — **verify: success** (format, typecheck, **222 tests in 8 files**, build,
   committed-build parity, offline feed smoke) and **browser smoke: success** (Playwright against
   `OFFLINE=1` snapshots: workflow checks, hardening, judges resources, presentation).
 - What the browser job now covers beyond the earlier runs: every one of the twelve routes at 320,

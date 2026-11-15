@@ -1,15 +1,31 @@
 import express from "express";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { apiHandler } from "./feeds.mjs";
+
+/*
+ * The security headers come from vercel.json, the file production actually reads,
+ * so a policy that would break the app breaks the browser tests here first.
+ * Cache-Control is deliberately not applied locally: the service worker is what
+ * these tests are about, and an immutable asset cache would let the HTTP cache
+ * stand in for it.
+ */
+const RULES = JSON.parse(
+  readFileSync(new URL("../vercel.json", import.meta.url), "utf8"),
+).headers.map(({ source, headers }) => ({
+  pattern: new RegExp(
+    "^" + source.replace(/[.]/g, "\\.").replace(/[(][.][*][)]/g, ".*") + "$",
+  ),
+  headers: headers.filter((h) => h.key.toLowerCase() !== "cache-control"),
+}));
+const SECURITY = RULES.filter((r) => r.headers.length);
+
 const app = express();
 app.disable("x-powered-by");
 app.use((req, res, next) => {
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-  res.setHeader(
-    "Permissions-Policy",
-    "camera=(), microphone=(), geolocation=()",
-  );
+  for (const rule of SECURITY)
+    if (rule.pattern.test(req.path))
+      for (const { key, value } of rule.headers) res.setHeader(key, value);
   next();
 });
 app.all("/api/feeds", apiHandler);
