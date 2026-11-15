@@ -20,7 +20,7 @@ screenshot. Nothing here is aspirational; every module named below exists in thi
                                        │ relative fetch, no credentials
                        ┌───────────────┴──────────────────────────────────────────────────┐
                        │ server/feeds.mjs  (or api/feeds.mjs on Vercel)                   │
-                       │ allowlist: studies | space-weather · TTL cache · schema check    │
+                       │ allowlist: 4 public feeds · TTL cache · schema check    │
                        │ OFFLINE=1 → serve the dated snapshot in public/data/, no network │
                        └───────────────▲──────────────────────────────────────────────────┘
                                        │ outbound, read-only, 9 s timeout
@@ -64,7 +64,8 @@ source. No value from this pathway enters a crew member's baseline.
 ### C. NOAA Kp + OSDR study metadata → adapter → dated snapshot fallback
 
 1. The browser calls `/api/feeds?feed=…` with a relative URL and no credentials.
-2. `server/feeds.mjs` (or `api/feeds.mjs` on Vercel) allowlists `studies` and `space-weather`,
+2. `server/feeds.mjs` (or `api/feeds.mjs` on Vercel) allowlists `studies`, `space-weather`,
+   `proton-flux` and `donki-events`,
    enforces a 9 s timeout, validates the payload shape, caches with a TTL, and preserves the
    observation time on cache hits.
 3. On network or validation failure, `src/lib/feeds.ts` falls back to the dated snapshot under

@@ -32,6 +32,7 @@
     "start": "node server/start.mjs",
     "preview": "node server/start.mjs",
     "test": "vitest run",
+    "snapshot:feeds": "node scripts/snapshot-feeds.mjs",
     "test:watch": "vitest",
     "typecheck": "tsc -b",
     "format": "prettier --write src server api scripts/build-sw.mjs \"tests/*.test.ts\" vite.config.ts tsconfig.json package.json vercel.json index.html",

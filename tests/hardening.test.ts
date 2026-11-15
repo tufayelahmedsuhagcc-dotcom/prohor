@@ -4,7 +4,7 @@ import { validFeed } from "../src/compute/feedValidation";
 import { parseCsv, csvExport, makeReading } from "../src/lib/storage";
 import { quantile, assess } from "../src/compute/engine";
 import { DEMO } from "../src/data/demo";
-// @ts-expect-error Shared Node/Vercel runtime module
+// Shared Node/Vercel runtime module; types live in server/feeds.d.mts.
 import { normalizeKp, getFeed } from "../server/feeds.mjs";
 const studies = JSON.parse(
   readFileSync(new URL("../public/data/studies.json", import.meta.url), "utf8"),
@@ -120,5 +120,37 @@ describe("provenance-preserving CSV and explicit directional rules", () => {
         : r,
     );
     expect(assess(rows, "temp", "CDR-01", "demo", 146).state).toBe("watch");
+  });
+});
+
+describe("bundled snapshot contracts", () => {
+  const payload = (name: string) =>
+    JSON.parse(
+      readFileSync(
+        new URL(`../public/data/${name}.json`, import.meta.url),
+        "utf8",
+      ),
+    );
+  it("ships the proton snapshot that the offline API serves, and it validates", () => {
+    const file = payload("proton-flux");
+    expect(validFeed("proton-flux", file)).toBe(true);
+    expect(file.data.band).toBe(">=10 MeV");
+    expect(file.data.unit).toBe("pfu");
+    expect(file.data.points.length).toBeGreaterThan(0);
+  });
+  it("ships the DONKI snapshot that the offline API serves, and it validates", () => {
+    const file = payload("donki-events");
+    expect(validFeed("donki-events", file)).toBe(true);
+    expect(file.data.events.length).toBeGreaterThan(0);
+    expect(
+      file.data.events.every((e: { url: string }) =>
+        e.url.startsWith("https://"),
+      ),
+    ).toBe(true);
+  });
+  it("rejects a proton payload whose observation is null", () => {
+    const file = payload("proton-flux");
+    file.data.latest = { time: "2026-11-15T11:35:00Z", flux: null };
+    expect(validFeed("proton-flux", file)).toBe(false);
   });
 });

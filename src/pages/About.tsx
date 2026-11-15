@@ -245,6 +245,12 @@ export function About() {
           <External href="https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json">
             NOAA SWPC · planetary Kp source feed
           </External>
+          <External href="https://services.swpc.noaa.gov/products/goes-proton-flux">
+            NOAA SWPC · GOES integral proton flux
+          </External>
+          <External href="https://api.nasa.gov/DONKI/notifications">
+            NASA DONKI · space-weather notification log
+          </External>
           <External href="https://github.com/tufayelahmedsuhagcc-dotcom/prohor">
             PROHOR source code, methods and tests
           </External>

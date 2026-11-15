@@ -4806,3 +4806,47 @@ html[data-motion="reduced"] *::after {
   font-size: 14px;
   color: var(--muted, #5c7065);
 }
+
+/* DONKI event log */
+.donki-list {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.donki-list li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line, #dbe6df);
+}
+.donki-list li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.donki-type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--tint, #f0f6f2);
+  color: var(--ink, #20372c);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.donki-list strong {
+  font-size: 13px;
+}
+.donki-list p {
+  margin: 4px 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted, #5c7065);
+}
+.donki-list a {
+  font-size: 12px;
+}

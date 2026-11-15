@@ -1,0 +1,113 @@
+{
+ "status": "cached",
+ "retrievedAt": "2026-11-15T11:46:24.425Z",
+ "sourceUrl": "https://api.nasa.gov/DONKI/notifications",
+ "data": {
+  "days": 14,
+  "counts": {
+   "CME": 6,
+   "RBE": 8
+  },
+  "events": [
+   {
+    "id": "20261115-AL-001",
+    "type": "CME",
+    "begin": "2026-11-15T01:21Z",
+    "summary": "C-type CME detected by GOES / SOHO. Start time of the event: 2026-11-14T22:15Z. Estimated speed: ~624 km/s. Estimated opening half-angle: 36 deg. Direction (lon./lat.): -70/36 in Heliocentric Earth Equatorial coordinates. Activity ID: 2026-11-14T22:15:00-CME-001 Based on preliminary analysis by the Moon to Mars Space W",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49561/1"
+   },
+   {
+    "id": "20261114-AL-001",
+    "type": "RBE",
+    "begin": "2026-11-14T21:34Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux remains elevated above the threshold of 1000 pfu since 2026-11-12T07:35Z. The elevated energetic electron flux levels observed since 2026-11-08T21:10Z are caused by a coronal hole hig",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49556/1"
+   },
+   {
+    "id": "20261113-AL-001",
+    "type": "CME",
+    "begin": "2026-11-13T16:25Z",
+    "summary": "C-type CME detected by STEREO A / SOHO. Start time of the event: 2026-11-13T03:24Z. Estimated speed: ~525 km/s. Estimated opening half-angle: 17 deg. Direction (lon./lat.): -46/13 in Heliocentric Earth Equatorial coordinates. Activity ID: 2026-11-13T03:24:00-CME-001 Based on preliminary analysis by the Moon to Mars Spa",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49532/1"
+   },
+   {
+    "id": "20261112-AL-001",
+    "type": "RBE",
+    "begin": "2026-11-12T21:30Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux remains elevated, recently crossing the threshold of 1000 pfu at 2026-11-12T07:35Z. The elevated energetic electron flux levels observed since 2026-11-08T21:10Z are caused by a corona",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49522/1"
+   },
+   {
+    "id": "20261110-AL-003",
+    "type": "RBE",
+    "begin": "2026-11-10T21:31Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux remains elevated, recently crossing the threshold of 1000 pfu at 2026-11-10T06:10Z. The elevated energetic electron flux levels observed since 2026-11-08T21:10Z are caused by a corona",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49486/1"
+   },
+   {
+    "id": "20261110-AL-002",
+    "type": "CME",
+    "begin": "2026-11-10T16:29Z",
+    "summary": "C-type CME detected by GOES / STEREO A / SOHO. Start time of the event: 2026-11-10T05:30Z. Estimated speed: ~974 km/s. Estimated opening half-angle: 11 deg. Direction (lon./lat.): 93/2 in Heliocentric Earth Equatorial coordinates. Activity ID: 2026-11-10T05:30:00-CME-001 Based on preliminary analysis by the Moon to Mar",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49483/1"
+   },
+   {
+    "id": "20261110-AL-001",
+    "type": "CME",
+    "begin": "2026-11-10T13:06Z",
+    "summary": "C-type CME detected by GOES. Start time of the event: 2026-11-09T18:15Z. Estimated speed: ~726 km/s. Estimated opening half-angle: 10 deg. Direction (lon./lat.): 65/-2 in Heliocentric Earth Equatorial coordinates. Activity ID: 2026-11-09T18:15:00-CME-001 Based on preliminary analysis by the Moon to Mars Space Weather A",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49474/1"
+   },
+   {
+    "id": "20261108-AL-002",
+    "type": "RBE",
+    "begin": "2026-11-08T21:28Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux is above 1000 pfu starting at 2026-11-08T21:10Z. The elevated energetic electron flux levels are caused by coronal hole high speed stream starting at 2026-11-06, reaching maximum sust",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49464/1"
+   },
+   {
+    "id": "20261108-AL-001",
+    "type": "RBE",
+    "begin": "2026-11-08T21:18Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux is above 1000 pfu starting at 2026-11-08T21:10Z. NASA spacecraft at GEO, MEO and other orbits passing through or in the vicinity of the Earth's outer radiation belt can be impacted. A",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49463/1"
+   },
+   {
+    "id": "20261106-AL-001",
+    "type": "CME",
+    "begin": "2026-11-06T01:56Z",
+    "summary": "C-type CME detected by GOES / SOHO. Start time of the event: 2026-11-05T20:00Z. Estimated speed: ~798 km/s. Estimated opening half-angle: 13 deg. Direction (lon./lat.): -35/2 in Heliocentric Earth Equatorial coordinates. Activity ID: 2026-11-05T20:00:00-CME-001 Based on preliminary analysis by the Moon to Mars Space We",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49397/1"
+   },
+   {
+    "id": "20261105-AL-001",
+    "type": "RBE",
+    "begin": "2026-11-05T13:29Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux remains elevated, recently crossing the threshold of 1000 pfu at 2026-11-05T13:00Z. The elevated energetic electron flux levels observed since 2026-11-01T12:45Z are likely caused by a",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49388/1"
+   },
+   {
+    "id": "20261103-AL-001",
+    "type": "RBE",
+    "begin": "2026-11-03T13:28Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux remains elevated, recently crossing the threshold of 1000 pfu at 2026-11-03T05:25Z. The elevated energetic electron flux levels observed since 2026-11-01T12:45Z are likely caused by a",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49369/1"
+   },
+   {
+    "id": "20261101-AL-002",
+    "type": "CME",
+    "begin": "2026-11-01T16:06Z",
+    "summary": "C-type CME detected by STEREO A / GOES / SOHO. Start time of the event: 2026-11-01T00:00Z. Estimated speed: ~894 km/s. Estimated opening half-angle: 14 deg. Direction (lon./lat.): -42/-11 in Heliocentric Earth Equatorial coordinates. Activity ID: 2026-11-01T00:00:00-CME-001 Based on preliminary analysis by the Moon to ",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49356/1"
+   },
+   {
+    "id": "20261101-AL-001",
+    "type": "RBE",
+    "begin": "2026-11-01T13:28Z",
+    "summary": "Significantly elevated energetic electron fluxes in the Earth's outer radiation belt. GOES \"greater than 2.0 MeV\" integral electron flux is above 1000 pfu starting at 2026-11-01T12:45Z. The elevated energetic electron flux levels are caused by the arrival of a coronal hole high speed stream which started on 2026-10-31,",
+    "url": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/49352/1"
+   }
+  ]
+ },
+ "notice": "NASA DONKI space-weather notifications for the last 14 days. An event log for context: not a risk forecast, not a dose estimate, and not NASA guidance for crew operations."
+}

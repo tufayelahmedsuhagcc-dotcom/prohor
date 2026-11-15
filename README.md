@@ -187,6 +187,13 @@ docs/           Methodology, provenance, deployment, security, test report, scre
   offline snapshot. Metadata only: no values feed the metabolic-panel chart or a personal baseline.
   Animal metadata (OSD-87) is kept separate from human comparisons.
 - **NOAA SWPC planetary K-index** — live, validated, time-stamped, with dated fallback.
+- **NOAA GOES integral proton flux** (`>=10 MeV`) — one sample per five-minute bucket, newest
+  spacecraft only, shown as the particle environment near Earth. Explicitly **not** a dose and not
+  a source of any threshold in the app.
+- **NASA DONKI notification log** — the last 14 days of public space-weather notifications, typed
+  and dated with source links. A log of what was reported, not a forecast and not a risk grade.
+- All four feeds go through the same path: bundled dated snapshot → `/api/feeds?feed=…` →
+  response validation → interface, with the retrieval time always shown.
 - **NASA Human Research Program** references for sleep, standard measures and the five hazards.
 
 The archive has **four crew on one short flight**. It can illustrate a comparison; it cannot

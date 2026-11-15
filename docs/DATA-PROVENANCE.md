@@ -2,15 +2,17 @@
 
 ## Source inventory
 
-| Source                                                                                                | What is used                                                                                                        | What is not claimed                                                                                             |
-| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| [NASA OSDR OSD-575](https://osdr.nasa.gov/bio/repo/data/studies/OSD-575)                              | Original submitted comprehensive metabolic panel; four coded Inspiration4 subjects; descriptive pre/post comparison | A clinical model, astronaut telemetry feed, validated long-duration threshold or fasting glucose classification |
-| [NASA OSDR OSD-569](https://osdr.nasa.gov/bio/repo/data/studies/OSD-569)                              | Human-study title, description and repository link                                                                  | New CBC calculations or personal reference ranges                                                               |
-| [NASA OSDR OSD-87](https://osdr.nasa.gov/bio/repo/data/studies/OSD-87)                                | Optional mouse-study metadata, hidden from the library's default human filter                                       | Human thresholds, personal measurements or evidence that a given user has an eye condition                      |
-| [NASA HRP hazards](https://www.nasa.gov/hrp/hazards/)                                                 | Five-hazard framing and contextual routine prompts                                                                  | Endorsement or certification of the app                                                                         |
-| [NASA Standard Measures](https://www.nasa.gov/reference/standard-measures/)                           | Rationale for consistent longitudinal measurement and context                                                       | Approval of developer-selected numerical change bands                                                           |
-| [NASA sleep risk](https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/) | Sleep/schedule context and rest-routine prompts                                                                     | A diagnostic instrument or personalized treatment                                                               |
-| [NOAA SWPC planetary Kp](https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json)         | Public Earth geomagnetic observations, their observation times and retrieval times                                  | Personal radiation exposure, cabin conditions, a forecast or EVA clearance                                      |
+| Source                                                                                                         | What is used                                                                                                        | What is not claimed                                                                                             |
+| -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [NASA OSDR OSD-575](https://osdr.nasa.gov/bio/repo/data/studies/OSD-575)                                       | Original submitted comprehensive metabolic panel; four coded Inspiration4 subjects; descriptive pre/post comparison | A clinical model, astronaut telemetry feed, validated long-duration threshold or fasting glucose classification |
+| [NASA OSDR OSD-569](https://osdr.nasa.gov/bio/repo/data/studies/OSD-569)                                       | Human-study title, description and repository link                                                                  | New CBC calculations or personal reference ranges                                                               |
+| [NASA OSDR OSD-87](https://osdr.nasa.gov/bio/repo/data/studies/OSD-87)                                         | Optional mouse-study metadata, hidden from the library's default human filter                                       | Human thresholds, personal measurements or evidence that a given user has an eye condition                      |
+| [NASA HRP hazards](https://www.nasa.gov/hrp/hazards/)                                                          | Five-hazard framing and contextual routine prompts                                                                  | Endorsement or certification of the app                                                                         |
+| [NASA Standard Measures](https://www.nasa.gov/reference/standard-measures/)                                    | Rationale for consistent longitudinal measurement and context                                                       | Approval of developer-selected numerical change bands                                                           |
+| [NASA sleep risk](https://www.nasa.gov/reference/risk-from-inadequate-sleep-and-irregular-schedules/)          | Sleep/schedule context and rest-routine prompts                                                                     | A diagnostic instrument or personalized treatment                                                               |
+| [NOAA SWPC planetary Kp](https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json)                  | Public Earth geomagnetic observations, their observation times and retrieval times                                  | Personal radiation exposure, cabin conditions, a forecast or EVA clearance                                      |
+| [NOAA GOES integral proton flux](https://services.swpc.noaa.gov/json/goes/primary/integral-protons-1-day.json) | The `>=10 MeV` integral proton channel near Earth, one point per five-minute bucket, newest spacecraft only         | A dose, dose rate, absorbed energy, shielding estimate, EVA clearance or individual exposure                    |
+| [NASA DONKI notifications](https://api.nasa.gov/DONKI/notifications)                                           | Public space-weather notification log for the last 14 days (type, issue time, summary, source link)                 | A forecast, a risk grade, an alert for a specific crew member or evidence that a quiet window is safe           |
 
 All sources were downloaded directly from the publishing agency. Exact downloadable-byte provenance is in `public/data/source-manifest.json`. NASA/NOAA availability can change; source failures are not replaced with generated observations.
 
@@ -60,6 +62,8 @@ Tests reproduce the row/analyte/subject counts, the C001 glucose median, R+1 del
 ```text
 GET /api/feeds?feed=studies
 GET /api/feeds?feed=space-weather
+GET /api/feeds?feed=proton-flux
+GET /api/feeds?feed=donki-events
 ```
 
 Response envelope:
@@ -76,10 +80,14 @@ Response envelope:
 
 - NASA metadata URLs: `https://osdr.nasa.gov/osdr/data/osd/meta/575`, `/569`, `/87`.
 - NASA metadata titles/descriptions are read from `study["OSD-N"].studies[0]`, not nonexistent top-level fields.
-- Metadata TTL: 24 hours. Kp TTL: 10 minutes. The cache is in-process and may be short-lived on serverless hosts.
+- Proton flux: `services.swpc.noaa.gov/json/goes/primary/integral-protons-1-day.json`, filtered to the `>=10 MeV` band, down-sampled to one sample per five-minute bucket, following the spacecraft that produced the newest sample. Unit is the source's `pfu`; no unit conversion is attempted.
+- DONKI: `api.nasa.gov/DONKI/notifications` over a rolling 14-day window. Only `FLR`, `CME`, `GST`, `SEP`, `RBE` and `IPS` messages are kept, sorted newest first and capped at 40. `NASA_API_KEY` is used when set; otherwise the public `DEMO_KEY`, which is hourly rate-limited — so the bundled snapshot is the normal fallback rather than an exception.
+- Metadata TTL: 24 hours. Kp TTL: 10 minutes. Proton TTL: 10 minutes. DONKI TTL: 30 minutes. The cache is in-process and may be short-lived on serverless hosts.
+- Both new snapshots are regenerated by `npm run snapshot:feeds` (`scripts/snapshot-feeds.mjs`), which writes `public/data/proton-flux.json` and `public/data/donki-events.json` only when the upstream response parses and validates.
 - Upstream requests have a nine-second timeout and payload/schema checks. Client refresh requests have a timeout and independent response validation.
 - NOAA accepts both observed object-array and header-plus-row formats. Invalid measurements are excluded, not coerced into zero. A feed with no valid records fails closed.
 - If the source fails, use a prior server response or the bundled dated snapshot. The original retrieval/observation times are retained. `OFFLINE=1` forces explicit snapshot mode.
+- Proton flux is the particle environment, **not** dose. No conversion to absorbed dose, no cumulative exposure, no mission-limit comparison is offered anywhere in the interface.
 - `live` means the server fetched a response; it **does not mean the underlying observation is current**. The interface says Network response, not live crew telemetry.
 - Unknown feed values → 400. Non-GET → 405. No health-record submission endpoint exists.
 

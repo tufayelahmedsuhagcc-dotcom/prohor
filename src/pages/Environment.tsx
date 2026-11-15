@@ -15,9 +15,33 @@ interface Weather {
   points: { time: string; kp: number }[];
   latest: { time: string; kp: number };
 }
+interface Proton {
+  band: string;
+  unit: string;
+  satellite?: number | string;
+  points: { time: string; flux: number }[];
+  latest: { time: string; flux: number };
+  peak: { time: string; flux: number };
+}
+interface DonkiEvent {
+  id: string;
+  type: string;
+  begin: string;
+  summary: string;
+  url: string;
+}
+interface Donki {
+  days: number;
+  counts: Record<string, number>;
+  events: DonkiEvent[];
+}
 export function Environment() {
   const c = useProhor(),
     feed = useFeed<Weather>("space-weather"),
+    protons = useFeed<Proton>("proton-flux"),
+    donki = useFeed<Donki>("donki-events"),
+    p = protons.result?.data,
+    dk = donki.result?.data,
     d = feed.result?.data,
     latest = d?.latest,
     age = ageHours(latest?.time),
@@ -308,6 +332,125 @@ export function Environment() {
           </details>
         </Panel>
       )}
+      <div className="environment-grid">
+        <Panel>
+          <SectionHead
+            eyebrow="NOAA SWPC / GOES ≥10 MeV"
+            title="Solar energetic particles"
+          >
+            <span className="badge historical">
+              {protons.result?.status === "live"
+                ? "Network response"
+                : protons.result
+                  ? "Cached snapshot"
+                  : protons.busy
+                    ? "Loading source…"
+                    : "No data"}
+            </span>
+          </SectionHead>
+          {p ? (
+            <>
+              <div className="weather-number">
+                <span>Latest integral proton flux</span>
+                <strong>
+                  {p.latest.flux.toPrecision(3)}
+                  <small> {p.unit}</small>
+                </strong>
+                <span>
+                  Peak in the last 24 h: {p.peak.flux.toPrecision(3)} {p.unit}{" "}
+                  at {utc(p.peak.time)}
+                </span>
+              </div>
+              <div className="key-values">
+                <div>
+                  <span>Band</span>
+                  <strong>{p.band}</strong>
+                </div>
+                <div>
+                  <span>Observed</span>
+                  <strong>{utc(p.latest.time)}</strong>
+                </div>
+                <div>
+                  <span>Retrieved</span>
+                  <strong>{utc(protons.result?.retrievedAt)}</strong>
+                </div>
+              </div>
+              <p className="small muted">
+                {protons.result?.notice || protons.error}
+              </p>
+              <Notice tone="warning">
+                <strong>Particle flux is not dose.</strong> This is the measured
+                particle environment near Earth. It is not absorbed dose, not a
+                dose rate, and not a basis for an EVA or fitness-for-duty
+                decision. No conversion is offered.
+              </Notice>
+              <External href="https://www.swpc.noaa.gov/products/goes-proton-flux">
+                NOAA GOES proton flux documentation
+              </External>
+            </>
+          ) : (
+            <p className="small muted">
+              {protons.busy
+                ? "Fetching the source; a bundled observation is available offline."
+                : protons.error || "No proton observation available."}
+            </p>
+          )}
+        </Panel>
+        <Panel>
+          <SectionHead
+            eyebrow={`NASA DONKI / LAST ${dk?.days ?? 14} DAYS`}
+            title="Space-weather event log"
+          >
+            <span className="badge historical">
+              {donki.result?.status === "live"
+                ? "Network response"
+                : donki.result
+                  ? "Cached snapshot"
+                  : donki.busy
+                    ? "Loading source…"
+                    : "No data"}
+            </span>
+          </SectionHead>
+          {dk ? (
+            <>
+              <p>
+                {Object.entries(dk.counts)
+                  .map(([type, n]) => `${n} ${type}`)
+                  .join(" · ")}{" "}
+                notifications in the window, newest first.
+              </p>
+              <ul className="donki-list">
+                {dk.events.slice(0, 5).map((e) => (
+                  <li key={e.id}>
+                    <span className="donki-type">{e.type}</span>
+                    <div>
+                      <strong>{utc(e.begin)}</strong>
+                      <p>{e.summary}</p>
+                      <a href={e.url} target="_blank" rel="noreferrer">
+                        Source notification
+                      </a>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <Notice tone="warning">
+                An event log is context, not a forecast. It does not describe an
+                individual&rsquo;s exposure, and a quiet week is not evidence of
+                safety.
+              </Notice>
+              <p className="small muted">
+                {donki.result?.notice || donki.error}
+              </p>
+            </>
+          ) : (
+            <p className="small muted">
+              {donki.busy
+                ? "Fetching the source; a bundled snapshot is available offline."
+                : donki.error || "No event log available."}
+            </p>
+          )}
+        </Panel>
+      </div>
     </>
   );
 }
