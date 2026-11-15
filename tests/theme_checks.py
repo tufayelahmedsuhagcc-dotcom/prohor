@@ -11,6 +11,9 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
+# axe-core is evaluated through the devtools protocol instead of add_script_tag: the site now
+# ships a Content-Security-Policy, and injecting an inline <script> is exactly what it blocks.
+AXE = (ROOT / 'node_modules/axe-core/axe.min.js').read_text()
 URL = os.getenv('PROHOR_URL', 'http://127.0.0.1:3000')
 REPORT = ROOT / 'docs/test-results/theme'
 SHOTS = REPORT / 'screenshots'
@@ -51,7 +54,7 @@ async def main():
             await page.goto(URL + '/#' + route, wait_until='networkidle')
 
         async def axe(name):
-            await page.add_script_tag(path=str(ROOT / 'node_modules/axe-core/axe.min.js'))
+            await page.evaluate(AXE)
             violations = await page.evaluate('''async () => (await axe.run(document, {
                 runOnly: {type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa']}
             })).violations.map(v => ({id: v.id, nodes: v.nodes.map(n => ({target: n.target, summary: n.failureSummary}))}))''')

@@ -1,6 +1,9 @@
 import asyncio,json,pathlib,os
 from playwright.async_api import async_playwright
 ROOT=pathlib.Path(__file__).resolve().parents[1];URL=os.getenv('PROHOR_URL','http://127.0.0.1:3000');results=[]
+# axe-core is evaluated through the devtools protocol instead of add_script_tag: the site now
+# ships a Content-Security-Policy, and injecting an inline <script> is exactly what it blocks.
+AXE = (ROOT / 'node_modules/axe-core/axe.min.js').read_text()
 OUT = ROOT / 'docs/test-results'
 OUT.mkdir(parents=True, exist_ok=True)
 def check(name,value):
@@ -26,7 +29,7 @@ async def main():
   close=page.get_by_role('button',name='Close menu',exact=True);await close.focus();await page.keyboard.press('Shift+Tab');check('Mobile navigation traps reverse tab at its last control',await page.get_by_role('button',name='About & methodology',exact=False).evaluate('(el)=>el===document.activeElement'))
   await page.keyboard.press('Escape');check('Escape closes the navigation and restores focus',await page.get_by_role('button',name='Toggle navigation',exact=True).evaluate('(el)=>el===document.activeElement'))
   for route in ['overview','atlas','logbook','trends','actions','evidence','environment','replay','handover','judges','settings','about']:
-   await page.goto(URL+'/#'+route,wait_until='networkidle');await page.add_script_tag(path=str(ROOT/'node_modules/axe-core/axe.min.js'));violations=await page.evaluate('async()=> (await axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}})).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}))');print('Violations:',violations,flush=True) if violations else None;check('Mobile axe scan: '+route,not violations)
+   await page.goto(URL+'/#'+route,wait_until='networkidle');await page.evaluate(AXE);violations=await page.evaluate('async()=> (await axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}})).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}))');print('Violations:',violations,flush=True) if violations else None;check('Mobile axe scan: '+route,not violations)
   await page.set_viewport_size({'width':320,'height':720})
   for route in ['overview','atlas','logbook','trends','actions','evidence','environment','replay','handover','judges','settings','about']:
    await page.goto(URL+'/#'+route,wait_until='networkidle');check('320px layout: '+route,await page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth'))

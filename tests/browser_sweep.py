@@ -1,6 +1,9 @@
 import asyncio,json,pathlib,os
 from playwright.async_api import async_playwright
 ROOT=pathlib.Path(__file__).resolve().parents[1]
+# axe-core is evaluated through the devtools protocol instead of add_script_tag: the site now
+# ships a Content-Security-Policy, and injecting an inline <script> is exactly what it blocks.
+AXE = (ROOT / 'node_modules/axe-core/axe.min.js').read_text()
 OUT = ROOT / 'docs/test-results'
 OUT.mkdir(parents=True, exist_ok=True)
 URL=os.getenv('PROHOR_URL','http://127.0.0.1:3000')
@@ -11,7 +14,7 @@ async def main():
   await page.goto(URL,wait_until='networkidle');await page.evaluate('navigator.serviceWorker.ready');await page.wait_for_function('!!navigator.serviceWorker.controller')
   for route in ['overview','atlas','logbook','trends','actions','evidence','environment','replay','handover','judges','settings','about']:
    await page.goto(URL+'/#'+route,wait_until='networkidle');await page.wait_for_timeout(300)
-   await page.add_script_tag(path=str(ROOT/'node_modules/axe-core/axe.min.js'))
+   await page.evaluate(AXE)
    a=await page.evaluate('async()=>{const r=await axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}});return r.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary})).slice(0,15)}));}')
    overflow=await page.evaluate('document.documentElement.scrollWidth > document.documentElement.clientWidth')
    r={'route':route,'violations':a,'overflow':overflow,'errors':list(errors),'h1':await page.locator('h1').inner_text()};results.append(r)
