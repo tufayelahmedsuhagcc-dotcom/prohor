@@ -14,8 +14,8 @@ with sync_playwright() as p:
   assert page.locator('.landing-film video').count()==1
   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),width
   page.locator('.landing-film').scroll_into_view_if_needed();page.screenshot(path=str(OUT/f'landing-video-{width}.png'))
-  page.locator('.landing-film > button').click();assert page.url.endswith('#judges');assert page.locator('.video-grid video').count()==2;assert page.locator('.dossier-card').count()==4
-  assert page.get_by_role('heading',name='A quieter watch. A clearer picture.').count()==1
+  page.locator('.landing-film > button').click();assert page.url.endswith('#judges');page.locator('.video-grid video').first.wait_for(state='visible',timeout=15000);assert page.locator('.video-grid video').count()==2;assert page.locator('.dossier-card').count()==4
+  page.get_by_role('heading',name='A quieter watch. A clearer picture.').wait_for(state='visible',timeout=15000)
   for _ in range(6):page.get_by_role('button',name='Next slide').click()
   assert page.get_by_role('heading',name='Human first. Always.').count()==1;assert page.get_by_role('button',name='Next slide').is_disabled()
   page.get_by_role('button',name='Go to slide 4: One reading. More context.').click();assert page.get_by_text('5.6 hours against a 7.4-hour',exact=False).count()>=1

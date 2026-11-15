@@ -40,12 +40,12 @@ new media surfaces and CI, no breaking API or data-schema change).
 - The 30-second demo row in SUBMISSION.md no longer says "add link"; it points at the file in the
   repository and states that the public URL only exists after deployment.
 - `public/media/` and `public/slides/` are excluded from the service-worker precache, so an offline
-  install no longer implies a 20 MB download.
+  install no longer implies a 20 MB download; the 30-second pitch itself **is** cached (2.7 MB).
 
 ## Verification for this draft
 
 Run on 2026-11-12 in a Linux container (Node v20.20.2): `npm ci`, `npm run format:check`,
-`npm run typecheck`, `npm test` (128 passing), `npm run build` (precache 47 files), plus
+`npm run typecheck`, `npm test` (128 passing), `npm run build` (precache 64 files), plus
 `OFFLINE=1 npm start` asset smoke. Browser suites were **not** executed in that environment
 (Chromium cannot launch); see [docs/TEST-REPORT.md](TEST-REPORT.md). Do not paste these notes into a
 release until CI has run them.

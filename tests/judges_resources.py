@@ -11,7 +11,7 @@ with sync_playwright() as p:
         page.goto(URL+'/#overview',wait_until='networkidle')
         page.get_by_role('button',name='Judges’ resources & PDF').click()
         assert page.url.endswith('#judges')
-        assert page.get_by_role('heading',name='Review the evidence, not just the interface.').is_visible()
+        page.get_by_role('heading',name='Review the evidence, not just the interface.').wait_for(state='visible',timeout=15000)
         assert page.evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth')
         with page.expect_download() as info: page.get_by_role('link',name='Download judges’ brief').click()
         download=info.value
@@ -26,7 +26,7 @@ with sync_playwright() as p:
             assert cached
             ctx.set_offline(True)
             page.reload(wait_until='domcontentloaded')
-            assert page.get_by_role('heading',name='Review the evidence, not just the interface.').is_visible()
+            page.get_by_role('heading',name='Review the evidence, not just the interface.').wait_for(state='visible',timeout=15000)
             result=page.evaluate("async()=>{const r=await fetch('/docs/PROHOR_Judges_Brief.pdf');return [r.status,(await r.text()).slice(0,5)]}")
             assert result==[200,'%PDF-'],result
             print('PASS judges PDF and page offline after precache',flush=True)
