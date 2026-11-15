@@ -55,10 +55,14 @@ describe("delivery caching", () => {
 });
 
 const sw = read("web/sw.js");
-const list = (name: string) =>
-  JSON.parse(
-    sw.match(new RegExp(`const ${name}=(\\[[^\\]]*\\])`))![1],
-  ) as string[];
+// CORE is an alias of FILES in the generated worker, so CORE has no literal of
+// its own and FILES is the list to read.
+const list = (name: string) => {
+  const literal =
+    sw.match(new RegExp(`const ${name}=(\\[[^\\]]*\\])`)) ??
+    (name === "CORE" ? sw.match(/const FILES=(\[[^\]]*\])/) : null);
+  return JSON.parse(literal![1]) as string[];
+};
 const core = list("CORE");
 const warm = list("WARM");
 

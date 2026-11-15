@@ -65,7 +65,8 @@ const code = `const CACHE=${JSON.stringify(name)};
 const FILM=new RegExp(${JSON.stringify(FILM)},"i");
 const PITCH=new RegExp(${JSON.stringify(PITCH)});
 const PATH_OK=new RegExp(${JSON.stringify(PATH_OK)});
-const CORE=${JSON.stringify(core)};
+const FILES=${JSON.stringify(core)}; // the install tier, also the CI parity check's name for it
+const CORE=FILES;
 const WARM=${JSON.stringify(warm)};
 const SHELL=${SHELL};
 

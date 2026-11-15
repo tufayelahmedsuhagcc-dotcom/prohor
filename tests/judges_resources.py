@@ -22,6 +22,9 @@ with sync_playwright() as p:
         if width == 1440:
             page.evaluate('navigator.serviceWorker.ready')
             page.wait_for_function('!!navigator.serviceWorker.controller')
+            # The brief is in the warm tier now: cached in the background after load, not at
+            # install, so poll instead of assuming it is already there.
+            page.wait_for_function("async()=>!!(await caches.match('/docs/PROHOR_Judges_Brief.pdf'))",timeout=45000)
             cached=page.evaluate("async()=>!!(await caches.match('/docs/PROHOR_Judges_Brief.pdf'))")
             assert cached
             ctx.set_offline(True)

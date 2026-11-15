@@ -155,6 +155,6 @@ Measured effects, same machine, `npm run build`:
 | Before                                                                                 | After                                                                                                        |
 | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | Repeat visit re-validates 421 KB JS + 72 KB CSS + fonts (`max-age=0, must-revalidate`) | 0 bytes: `immutable`, one year                                                                               |
-| Install downloads 66 files / 5.46 MB before the app is usable                          | 43 files / 0.89 MB, then 4.57 MB in the background                                                           |
+| Install downloads 66 files / 5.46 MB before the app is usable                          | 42 files / 0.89 MB, then 24 files / 4.57 MB in the background                                              |
 | Initial JS graph 421 KB raw / 131 KB gzip in one file                                  | 408 KB raw / 125 KB gzip, split into cache-stable vendor chunks; `papaparse` (19 KB) off the first-load path |
 | A failed optional file breaks the whole install                                        | Only a missing shell fails install                                                                           |

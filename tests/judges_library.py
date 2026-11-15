@@ -30,6 +30,8 @@ with sync_playwright() as p:
   if width==1440:
    page.screenshot(path=str(OUT/'judges-library-desktop.png'),full_page=True)
    page.evaluate('navigator.serviceWorker.ready');page.wait_for_function('!!navigator.serviceWorker.controller')
+   # The four PDFs are warmed in the background after load rather than installed up front.
+   page.wait_for_function("async()=>{const f=%r;return !!(await caches.match(f))}"%('/docs/'+DOCS[-1][1]),timeout=45000)
    ctx.set_offline(True);page.reload(wait_until='domcontentloaded')
    for _,file in DOCS:
     result=page.evaluate("async path => {const r=await fetch(path);return [r.status,(await r.text()).slice(0,5)]}",'/docs/'+file)

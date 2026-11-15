@@ -60,7 +60,7 @@ max-age=31536000, immutable` for fingerprinted `/assets/` and `/icons/`; before 
   `normalizeProtons` rejects an empty flux value instead of reading it as zero, and picks the
   current spacecraft by newest timestamp rather than by array position.
 - `npm run snapshot:feeds` regenerates both dated snapshots and writes nothing when an upstream
-  fails to parse. Both snapshots are in the offline precache (66 files).
+  fails to parse. Both snapshots are in the core offline cache, which installs on its own.
 - `server/feeds.d.mts` gives the TypeScript tests real types instead of a `@ts-expect-error`.
 - **Deep links now resolve.** The app routed on the URL hash while already falling back to the
   last path segment, but only six paths were rewritten on Vercel, so `prohor.health/environment`
