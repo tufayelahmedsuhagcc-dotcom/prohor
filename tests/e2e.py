@@ -69,6 +69,11 @@ async def main():
    await page.set_viewport_size({'width':width,'height':900})
    for route in ['overview','atlas','logbook','trends','actions','evidence','environment','replay','handover','settings','judges','about']:
     await go(route)
+    # The view is lazy: wait for its heading instead of racing the chunk.
+    await page.locator('main h1').first.wait_for(state='attached',timeout=20000)
+    # Measure once fonts are in: a fallback face can be narrower than Inter and hide an
+    # overflow that a real visitor would see.
+    await page.evaluate('document.fonts.ready.then(()=>true)')
     headings=await page.locator('main h1').count();overflow=await page.evaluate('document.documentElement.scrollWidth-innerWidth')
     check(f'{route} shows one heading at {width}px',headings==1,headings)
     check(f'{route} does not scroll sideways at {width}px',overflow<=1,overflow)
