@@ -1,4 +1,9 @@
-"""Check the two videos, slide controls, PDF and offline caching on several screen widths."""
+"""Check the two videos, slide controls, PDF and offline caching on several screen widths.
+
+Cache policy under test (decided 2026-11-15): the 30-second pitch and the deck PDF are
+precached so the headline demo really plays offline; the 3:49.5 film streams instead, because
+caching it would add ~6.6 MB to every first install.
+"""
 import os
 import pathlib
 from playwright.sync_api import sync_playwright
@@ -24,6 +29,6 @@ with sync_playwright() as p:
   for path in ['/media/prohor-30-second.mp4','/media/prohor-four-minute.mp4']:
    res=ctx.request.get(URL+path,headers={'Range':'bytes=0-1023'}); assert res.status==206,(path,res.status);assert 'video/mp4' in res.headers.get('content-type','');assert len(res.body())==1024
   pdf=ctx.request.get(URL+'/docs/PROHOR_Seven_Slide_Presentation.pdf');assert pdf.status==200 and pdf.body().startswith(b'%PDF-')
-  page.evaluate('navigator.serviceWorker.ready');page.wait_for_function('!!navigator.serviceWorker.controller');cached=page.evaluate("async()=>{const keys=await caches.keys();const c=await caches.open(keys.find(x=>x.startsWith('prohor-')));return [(await c.match('/media/prohor-30-second.mp4'))!==undefined,(await c.match('/docs/PROHOR_Seven_Slide_Presentation.pdf'))!==undefined]}");assert cached==[False,True],cached
+  page.evaluate('navigator.serviceWorker.ready');page.wait_for_function('!!navigator.serviceWorker.controller');cached=page.evaluate("async()=>{const keys=await caches.keys();const c=await caches.open(keys.find(x=>x.startsWith('prohor-')));return [(await c.match('/media/prohor-30-second.mp4'))!==undefined,(await c.match('/docs/PROHOR_Seven_Slide_Presentation.pdf'))!==undefined,(await c.match('/media/prohor-four-minute.mp4'))!==undefined]}");assert cached==[True,True,False],cached
   assert not errors,errors;print('PASS',width,'layout, video links, slide navigation, range and cache policy',flush=True);ctx.close()
  b.close()
