@@ -2,6 +2,32 @@
 
 Notes describe the shipped application. Release dates are deliberately omitted; the git history is the timeline.
 
+## Unreleased — team section, video fixes and real captions
+
+- **The team is a section of its own on About.** Five cards — initials, name, role, and what each
+  person owns — driven by `src/data/team.ts`, replacing a bulleted list inside a side panel. It is a
+  `auto-fit` grid that goes to one column under 560 px, and every pairing that matters clears AA
+  contrast in both themes (worst is 4.84:1, the 11 px role line in light mode).
+- **Fixed: the 30-second pitch misbehaved on desktop.** The worker answered a video's byte-range
+  request with the whole cached file as a `200`. A `<video>` element seeks with ranges, so the player
+  stalled or jumped instead of playing. Media now goes straight to the network while it is reachable
+  — the CDN answers with real `206`s — and the cached copy is only used offline, sliced to the range
+  that was asked for (`Content-Range`, `Accept-Ranges`, `416` when the range is past the end).
+- **Fixed: nothing was cached at runtime.** The lazy-cache branch tested a regex that had lost its
+  backslashes in the generator, so it never matched. It now uses the same `PATH_OK` the tests cover,
+  and range requests are never stored.
+- **The player says so when a video will not start**, instead of showing a dead frame: a message with
+  a direct link to the file and to the transcript.
+- **Captions are real.** The films ship `.srt` only, which a `<track>` cannot load, so the note that
+  called them "embedded" was wrong. `npm run captions` converts every `.srt` to `.vtt`, the player
+  attaches `<track kind="captions" default>`, and both the captions and the `.srt` are cached in the
+  warm tier. A test fails if a `.vtt` drifts from its `.srt`.
+- **The four-minute film's transcript and captions are cached**, which the page already promised but
+  the exclusion rule had swept up with the film itself. The film is still never cached.
+- Judges copy no longer says playback requires a connection; the pitch plays offline once warmed.
+- Every one of the twelve routes is now checked at 320, 390 and 1440 px in the push job for a single
+  `h1` and for sideways scrolling, not just the hand-run axe sweep. 218 tests total.
+
 ## Unreleased — loading and refreshing made faster
 
 - **Repeat visits stop re-downloading the app.** `vercel.json` now sends `public,
@@ -9,9 +35,9 @@ max-age=31536000, immutable` for fingerprinted `/assets/` and `/icons/`; before 
   refresh re-validated ~440 KB of JS and CSS and the fonts. `/data/` gets an hour with
   `stale-while-revalidate`, `/docs/`, `/media/` and `/slides/` a week, `/sw.js` stays `no-cache`, and
   HTML keeps revalidating so a deploy is still seen.
-- **Install caches 0.89 MB instead of 5.46 MB.** The service worker is now two-tiered: install
+- **Install caches 0.94 MB instead of 5.46 MB.** The service worker is now two-tiered: install
   stores the shell, data and woff2 fonts (42 files); films, PDFs, the ZIP, posters and slide images
-  (24 files, 4.57 MB) are fetched by a background warm the page triggers after `load`. Install is
+  (28 files, 4.8 MB) are fetched by a background warm the page triggers after `load`. Install is
   per-file, so one 404 no longer fails the whole cache, and it only fails if the shell itself is
   missing. The 3:49.5 film is still never cached.
 - **A navigation is answered within 3 seconds** — network first, cached shell after that deadline.
@@ -22,9 +48,9 @@ max-age=31536000, immutable` for fingerprinted `/assets/` and `/icons/`; before 
   (papaparse, 19 KB raw / 7 KB gzip), imported only by the views that import or export CSV.
 - Vendor chunks (`react`, `zod`, `icons`, `papa`) are split so a deploy that only changes app code no
   longer invalidates the React runtime in every visitor's cache.
-- 15 new tests in `tests/performance.test.ts` enforce the header policy, the two cache tiers and the
+- 24 tests in `tests/performance.test.ts` enforce the header policy, the two cache tiers and the
   install budget, execute the generated worker under stubs, and fail if a routed view has no
-  prefetch loader. 204 tests total.
+  prefetch loader. 218 tests total.
 
 ## Unreleased — dark mode
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { ROUTE_MODULES } from "../src/lib/prefetch";
 
 const root = new URL("../", import.meta.url);
@@ -55,6 +55,7 @@ describe("delivery caching", () => {
 });
 
 const sw = read("web/sw.js");
+const buildScript = read("scripts/build-sw.mjs");
 // CORE is an alias of FILES in the generated worker, so CORE has no literal of
 // its own and FILES is the list to read.
 const list = (name: string) => {
@@ -118,9 +119,23 @@ describe("offline cache tiers", () => {
 
   it("never caches the 3:49.5 film in either tier", () => {
     expect(
-      [...core, ...warm].filter((f) => f.includes("prohor-four-minute")),
+      [...core, ...warm].filter((f) => f.includes("prohor-four-minute.mp4")),
     ).toEqual([]);
-    expect(sw).toContain("the long film streams");
+    // Its words still travel offline, which is what the page promises.
+    expect(
+      warm.filter((f) => f.startsWith("/media/prohor-four-minute")),
+    ).toEqual(
+      expect.arrayContaining([
+        "/media/prohor-four-minute-transcript.txt",
+        "/media/prohor-four-minute.srt",
+        "/media/prohor-four-minute.vtt",
+      ]),
+    );
+    expect(sw).not.toContain("prohor-four-minute.mp4");
+    // The exclusion lives in the generator, so assert it there too.
+    expect(buildScript).toContain(
+      "/^\\/media\\/prohor-four-minute.*\\.(mp4|webm)$/",
+    );
   });
 
   it("does not fail the whole install when one optional file 404s", () => {
@@ -164,7 +179,25 @@ describe("background prefetch coverage", () => {
 describe("generated worker behaviour", () => {
   // The worker is a generated string, so it is executed here under stubs rather
   // than trusted: escaping bugs in the generator have broken it before.
-  const load = () => {
+  type Worker = {
+    FILM: RegExp;
+    PATH_OK: RegExp;
+    RANGE: RegExp;
+    CORE: string[];
+    WARM: string[];
+    byRange: (request: Request, hit: Response) => Promise<Response>;
+    media: (request: Request, url: URL) => Promise<Response>;
+  };
+  const offline = () => Promise.reject(new TypeError("offline"));
+  const load = (
+    cacheHit: Response | null = null,
+    fetchImpl: typeof fetch = offline,
+  ): Worker => {
+    const cache = {
+      match: async () => cacheHit ?? undefined,
+      put: async () => {},
+      add: async () => {},
+    };
     const stub = {
       addEventListener() {},
       skipWaiting: async () => {},
@@ -174,23 +207,32 @@ describe("generated worker behaviour", () => {
       "self",
       "caches",
       "location",
-      sw + "\nreturn {FILM,PITCH,PATH_OK,CORE,WARM};",
-    ) as (...args: unknown[]) => {
-      FILM: RegExp;
-      PITCH: RegExp;
-      PATH_OK: RegExp;
-      CORE: string[];
-      WARM: string[];
-    };
-    return run(stub, {}, { origin: "https://prohor.health" });
+      "fetch",
+      sw + "\nreturn {FILM,PATH_OK,RANGE,CORE,WARM,byRange,media};",
+    ) as (...args: unknown[]) => Worker;
+    return run(
+      stub,
+      { open: async () => cache, keys: async () => [] },
+      { origin: "https://prohor.health" },
+      fetchImpl,
+    );
   };
+  const video = (bytes: number) =>
+    new Response(new Blob([new Uint8Array(bytes).fill(7)]), {
+      status: 200,
+      headers: { "content-type": "video/mp4", "content-length": String(bytes) },
+    });
+  const rangeRequest = (range: string) =>
+    new Request("https://prohor.health/media/prohor-30-second.mp4", {
+      headers: { range },
+    });
 
-  it("lets the long film stream but serves the short pitch from cache", () => {
+  it("treats every video as media, not just the long film", () => {
     const w = load();
     expect(w.FILM.source).toBe("\\.(mp4|webm)$");
     expect(w.FILM.test("/media/prohor-four-minute.mp4")).toBe(true);
-    expect(w.PITCH.test("/media/prohor-four-minute.mp4")).toBe(false);
-    expect(w.PITCH.test("/media/prohor-30-second.mp4")).toBe(true);
+    expect(w.FILM.test("/media/prohor-30-second.mp4")).toBe(true);
+    expect(w.FILM.test("/assets/index-abc.js")).toBe(false);
   });
 
   it("caches only the static namespaces and never the API", () => {
@@ -198,5 +240,93 @@ describe("generated worker behaviour", () => {
     for (const p of ["/assets/x.js", "/data/studies.json", "/icons/mark.svg"])
       expect(w.PATH_OK.test(p), p).toBe(true);
     expect(w.PATH_OK.test("/api/feeds")).toBe(false);
+  });
+
+  // A whole-body 200 for a byte-range request is what made the pitch misbehave
+  // on desktop, so the offline path has to answer ranges properly.
+  it("answers a byte range from the cached copy with a real 206", async () => {
+    const w = load();
+    const res = await w.byRange(rangeRequest("bytes=10-19"), video(100));
+    expect(res.status).toBe(206);
+    expect(res.headers.get("content-range")).toBe("bytes 10-19/100");
+    expect(res.headers.get("content-length")).toBe("10");
+    expect(res.headers.get("accept-ranges")).toBe("bytes");
+    expect((await res.arrayBuffer()).byteLength).toBe(10);
+  });
+
+  it("handles open-ended and suffix ranges", async () => {
+    const w = load();
+    const open = await w.byRange(rangeRequest("bytes=90-"), video(100));
+    expect(open.status).toBe(206);
+    expect(open.headers.get("content-range")).toBe("bytes 90-99/100");
+    const suffix = await w.byRange(rangeRequest("bytes=-10"), video(100));
+    expect(suffix.headers.get("content-range")).toBe("bytes 90-99/100");
+  });
+
+  it("serves the whole cached file when no range was asked for", async () => {
+    const w = load();
+    const res = await w.byRange(
+      new Request("https://prohor.health/media/prohor-30-second.mp4"),
+      video(100),
+    );
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-length")).toBe("100");
+    expect((await res.arrayBuffer()).byteLength).toBe(100);
+  });
+
+  it("rejects a range that starts past the end of the file", async () => {
+    const w = load();
+    const res = await w.byRange(rangeRequest("bytes=200-300"), video(100));
+    expect(res.status).toBe(416);
+    expect(res.headers.get("content-range")).toBe("bytes */100");
+  });
+
+  it("falls back to the cached copy only when the network fails", async () => {
+    const cached = load(video(100));
+    const req = rangeRequest("bytes=0-9");
+    const res = await cached.media(req, new URL(req.url));
+    // fetch is stubbed to the real one, which cannot reach prohor.health here.
+    expect([206, 504]).toContain(res.status);
+    if (res.status === 206)
+      expect(res.headers.get("content-range")).toBe("bytes 0-9/100");
+  });
+
+  it("says so when a video is neither online nor cached", async () => {
+    const w = load(null);
+    const req = rangeRequest("bytes=0-9");
+    const res = await w.media(req, new URL(req.url));
+    expect(res.status).toBe(504);
+    expect(await res.text()).toContain("transcript");
+  });
+});
+
+describe("video captions", () => {
+  it("keeps a .vtt beside every .srt, converted from the same cues", async () => {
+    const { srtToVtt } = await import("../scripts/build-vtt.mjs");
+    const dir = new URL("../public/media/", import.meta.url);
+    const srts = readdirSync(dir).filter((f) => f.endsWith(".srt"));
+    expect(srts.length).toBeGreaterThan(0);
+    for (const srt of srts) {
+      const vtt = srt.replace(/\.srt$/, ".vtt");
+      expect(existsSync(new URL(vtt, dir)), vtt).toBe(true);
+      expect(readFileSync(new URL(vtt, dir), "utf8")).toBe(
+        srtToVtt(readFileSync(new URL(srt, dir), "utf8")),
+      );
+    }
+  });
+
+  it("points the player at the captions instead of claiming they are embedded", () => {
+    const source = read("src/components/Presentation.tsx");
+    expect(source).toContain('kind="captions"');
+    expect(source).toContain(".vtt");
+    expect(source).not.toContain("captions are embedded");
+  });
+
+  it("ships the captions through the offline warm tier", () => {
+    const warm = JSON.parse(
+      sw.match(/const WARM=(\[[^\]]*\])/)![1],
+    ) as string[];
+    expect(warm.some((f) => f.endsWith(".srt"))).toBe(true);
+    expect(warm.some((f) => f.endsWith(".vtt"))).toBe(true);
   });
 });

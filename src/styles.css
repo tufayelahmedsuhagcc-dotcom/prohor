@@ -4937,6 +4937,21 @@ html[data-motion="reduced"] *::after {
 }
 
 /* Offline notice for the streamed film: honest about what will not play. */
+.video-failed {
+  margin: 0;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--warning-border);
+  background: var(--warning-soft);
+  color: var(--warning-text);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.video-failed a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .video-offline {
   margin: 0 0 10px;
   padding: 10px 12px;
@@ -4959,13 +4974,121 @@ html[data-motion="reduced"] *::after {
 }
 
 /* Team list on About: names, not job titles. */
-.team-list {
-  margin: 10px 0 6px;
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
+/* The team: one card per person, scannable from a phone and a projector. */
+.team-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 26px;
+  margin-bottom: 22px;
+  min-width: 0;
+}
+.team-section .section-head {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.team-lede {
+  max-width: 64ch;
+  margin: 0 0 20px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: var(--body);
+}
+.team-facts {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+.team-facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel2);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.team-facts strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.team-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: 14px;
+}
+.team-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: var(--panel2);
+}
+.team-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.team-avatar {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--mint);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.team-card h3 {
+  margin: 0 0 2px;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.team-role {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.team-owns {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--body);
+}
+.team-note {
+  margin: 16px 0 0;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+@media (max-width: 560px) {
+  .team-section {
+    padding: 20px;
+  }
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
 }
 .hero-bangla {
   margin: 6px 0 0;

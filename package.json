@@ -33,10 +33,11 @@
     "preview": "node server/start.mjs",
     "test": "vitest run",
     "snapshot:feeds": "node scripts/snapshot-feeds.mjs",
+    "captions": "node scripts/build-vtt.mjs",
     "test:watch": "vitest",
     "typecheck": "tsc -b",
-    "format": "prettier --write src server api scripts/build-sw.mjs \"tests/*.test.ts\" vite.config.ts tsconfig.json package.json vercel.json index.html",
-    "format:check": "prettier --check src server api scripts/build-sw.mjs \"tests/*.test.ts\" vite.config.ts tsconfig.json package.json vercel.json index.html"
+    "format": "prettier --write src server api scripts/build-sw.mjs scripts/build-vtt.mjs \"tests/*.test.ts\" vite.config.ts tsconfig.json package.json vercel.json index.html",
+    "format:check": "prettier --check src server api scripts/build-sw.mjs scripts/build-vtt.mjs \"tests/*.test.ts\" vite.config.ts tsconfig.json package.json vercel.json index.html"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",

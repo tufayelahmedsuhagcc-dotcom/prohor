@@ -62,6 +62,16 @@ async def main():
   await go('logbook');await openlog();await page.locator('dialog').get_by_role('combobox',name='Health indicator',exact=True).select_option('temp');await page.locator('dialog').get_by_label('Measured value',exact=True).fill('36.7');await page.locator('dialog').get_by_role('button',name='Save on device',exact=True).click();await page.locator('dialog').wait_for(state='detached');check('Offline reading entry persists',len((await stored())['readings'])==65)
   await ctx.set_offline(False);await go('replay');await page.get_by_role('button',name='Reset replay',exact=True).click();await page.get_by_role('button',name='Play scenario',exact=True).click();await page.wait_for_timeout(3800);await page.get_by_role('button',name='Pause replay',exact=True).click();check('Replay advances without a server telemetry stream',(await stored())['settings']['day']==143);check('Replay never deletes personal readings',len((await stored())['readings'])==65)
   await page.set_viewport_size({'width':390,'height':844});await go('overview');await page.get_by_role('button',name='Toggle navigation',exact=True).click();check('Mobile navigation opens',await page.locator('.sidebar.open').count()==1);await page.get_by_role('link',name='NASA evidence',exact=False).click();check('Mobile navigation closes on navigation',await page.locator('.sidebar.open').count()==0);check('Mobile content stays within viewport',await page.evaluate('document.documentElement.scrollWidth<=innerWidth'))
+  # Every route at three widths. The axe sweep covers semantics but only runs on demand,
+  # so the per-push job still checks the two things a broken grid breaks first: one
+  # heading per view, and no sideways scrolling on a phone.
+  for width in (320,390,1440):
+   await page.set_viewport_size({'width':width,'height':900})
+   for route in ['overview','atlas','logbook','trends','actions','evidence','environment','replay','handover','settings','judges','about']:
+    await go(route)
+    headings=await page.locator('main h1').count();overflow=await page.evaluate('document.documentElement.scrollWidth-innerWidth')
+    check(f'{route} shows one heading at {width}px',headings==1,headings)
+    check(f'{route} does not scroll sideways at {width}px',overflow<=1,overflow)
   check('No health record POST requests were made',posts==[]);check('No uncaught JavaScript errors in workflow',errors==[])
   await ctx.close()
   recovery=await browser.new_context();rp=await recovery.new_page();await rp.goto(URL);await rp.evaluate('localStorage.setItem("prohor.v3.workspace","bad original data")');await rp.reload(wait_until='networkidle');await rp.get_by_label('Flight day',exact=True).select_option('142');check('Corrupt storage is protected from silent overwrite',await rp.evaluate('localStorage.getItem("prohor.v3.workspace")')=='bad original data');await rp.goto(URL+'/#settings');await rp.get_by_role('button',name='Erase local data',exact=True).click();await rp.get_by_label('Confirmation',exact=True).fill('DELETE');await rp.locator('dialog').get_by_role('button',name='Erase data',exact=True).click();check('Explicit recovery reset is possible',await rp.evaluate('JSON.parse(localStorage.getItem("prohor.v3.workspace")).version')==3)

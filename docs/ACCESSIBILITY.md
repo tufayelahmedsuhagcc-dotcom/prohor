@@ -91,14 +91,22 @@ accessibility in mind but **not re-scanned** (see the table above):
 
 - `<video controls preload="none" poster=… aria-label=…>` — no autoplay, so nothing moves or
   speaks without a decision; a poster frame stands in before playback.
-- Narrated audio is also burned in as captions, and each film ships an `.srt` plus a plain-text
-  transcript that can be downloaded without playing the video.
+- **Captions are a real text track.** Each film ships an `.srt`; `npm run captions` converts it to
+  the `.vtt` that a `<track>` can load, and the player attaches `<track kind="captions" default>` so
+  the CC control works. The `.srt` and a plain-text transcript remain downloadable without playing
+  anything. A test fails if a `.vtt` drifts from its `.srt`, and both are cached for offline use.
 - The deck is a keyboard-operable region: previous/next buttons, seven labelled dot buttons with
   `aria-current`, and a polite live region announcing the slide change. Each slide image carries
   alt text; the PDF is downloadable and readable outside the app.
-- The 30-second pitch is cached in the background right after the first visit (install no longer downloads it), so it plays offline from then on; the four-minute film streams,
-  and when the browser reports no connection the player says so and links the precached transcript
-  instead of failing silently.
+- The 30-second pitch is cached in the background right after the first visit (install no longer
+  downloads it), so it plays offline from then on; the four-minute film streams, and when the browser
+  reports no connection the player says so and links the precached transcript instead of failing
+  silently. If a video will not start at all, the player shows a message with direct links to the
+  file and the transcript rather than a dead frame.
+- **Team cards** (About) are a list of five items, each with initials in a decorative span
+  (`aria-hidden`), the name as a heading, the role and one line of responsibility. Measured contrast:
+  11.66:1 name, 5.95:1 responsibility and 4.84:1 role line in light mode; 13.65:1, 8.97:1 and 7.42:1
+  in dark mode.
 
 ## Not verified
 

@@ -133,9 +133,9 @@ build if `immutable` ever appears on a non-fingerprinted path, or if the worker 
 
 **The service worker, in two tiers.** Install caches only the shell — `index.html`, the JS/CSS
 chunks, the six woff2 fonts, the nine data files, icons, manifest and licences: **42 files,
-0.89 MB**. Everything else (films, PDFs, the judges' ZIP, posters, slide images, the social card,
+0.94 MB**. Everything else (films, PDFs, the judges' ZIP, posters, slide images, the social card,
 legacy `.woff`) is fetched by a background warm that the page requests with
-`postMessage({type:'warm'})` once `load` fires: **24 files, 4.57 MB**, cached for offline use from a
+`postMessage({type:'warm'})` once `load` fires: **28 files, 4.8 MB**, cached for offline use from a
 few seconds after the first visit. It used to be one 66-file / 5.46 MB `addAll` **during install**,
 which delayed every first visit and failed the whole install if a single file 404'd. Install is now
 per-file and only fails if the shell itself cannot be stored. The 3:49.5 film is in neither tier —
@@ -155,7 +155,7 @@ Measured effects, same machine, `npm run build`:
 | Before                                                                                   | After                                                                                                                                         |
 | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | Repeat visit re-validates 421 KB JS + 72 KB CSS + fonts (`max-age=0, must-revalidate`)   | 0 bytes: `immutable`, one year                                                                                                                |
-| Install downloads 66 files / 5.46 MB before the app is usable                            | 42 files / 0.89 MB, then 24 files / 4.57 MB in the background                                                                                 |
+| Install downloads 66 files / 5.46 MB before the app is usable                            | 42 files / 0.94 MB, then 28 files / 4.8 MB in the background                                                                                  |
 | Initial JS + CSS 144.7 KB gzip, in one 422 KB JS file that changes when app code changes | 138.7 KB gzip across five chunks; `papaparse` (7 KB gzip) off the first-load path, React and zod in chunks an app-only deploy does not rename |
 | A failed optional file breaks the whole install                                          | Only a missing shell fails install                                                                                                            |
 
@@ -171,7 +171,7 @@ Measured effects, same machine, `npm run build`:
 | `/media/*.mp4`       | `public, max-age=604800`                             |
 | `/` (HTML)           | `public, max-age=0, must-revalidate`                 |
 
-The served `sw.js` reports cache `prohor-v3-5d03d27ffe9c` with 42 core and 24 warm entries, and the
+The served `sw.js` reports cache `prohor-v3-5b3528395f18` with 42 core and 28 warm entries, and the
 five entry assets transfer 145,359 bytes compressed. What that table does **not** prove: no browser
 was available here, so the repeat-visit saving is verified as a header value, not as a measured
 second load, and no field timing (LCP, TTFB) was captured. The CI browser suite does exercise the

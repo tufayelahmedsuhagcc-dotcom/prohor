@@ -7,6 +7,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Panel, SectionHead, External, Notice } from "../components/UI";
+import { TeamSection } from "../components/TeamSection";
 import { SOURCES } from "../data/catalog";
 import { useProhor } from "../lib/context";
 export function About() {
@@ -35,38 +36,8 @@ export function About() {
         NASA-endorsed, a medical device or a clinically validated decision
         system.
       </Notice>
+      <TeamSection />
       <div className="two-columns">
-        <Panel>
-          <SectionHead eyebrow="THE TEAM" title="Skorpe Monad" />
-          <p>
-            Five people from Sylhet, Bangladesh, building toward the 2026 NASA
-            Space Apps Challenge. Named here because a prototype is only
-            reviewable if you know who made it.
-          </p>
-          <ul className="team-list">
-            <li>
-              <strong>Tufayel Ahmed</strong> — team lead, main developer and
-              designer
-            </li>
-            <li>
-              <strong>Annapurna Das Protyasha</strong> — researcher, concept
-            </li>
-            <li>
-              <strong>Rakthim Deb Rudro</strong> — advisor, methodological
-              review
-            </li>
-            <li>
-              <strong>Mir Shahi Ahmad</strong> — data scientist
-            </li>
-            <li>
-              <strong>Tonusri Deb Diggi</strong> — video and photo editor
-            </li>
-          </ul>
-          <p className="muted-note">
-            Roles, not job titles: one person can hold two of these on any given
-            night. AI assistance is disclosed separately below.
-          </p>
-        </Panel>
         <Panel>
           <SectionHead
             eyebrow="THE CHALLENGE"

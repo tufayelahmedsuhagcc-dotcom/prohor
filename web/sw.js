@@ -1,10 +1,10 @@
-const CACHE="prohor-v3-5d03d27ffe9c";
+const CACHE="prohor-v3-309d4f2df730";
 const FILM=new RegExp("\\.(mp4|webm)$","i");
-const PITCH=new RegExp("^\\/media\\/prohor-30-second\\.mp4$");
 const PATH_OK=new RegExp("^\\/(assets|data|icons|docs|media|slides)\\/");
-const FILES=["/assets/About-MSvD_5g7.js","/assets/Actions-BZjNcYcV.js","/assets/Environment-D_XTG5-1.js","/assets/Evidence-BsYeGiRk.js","/assets/Handover-DovYA38F.js","/assets/Judges-NzhKwkxQ.js","/assets/Logbook-DqLOpYPa.js","/assets/Replay-DvoaCZeG.js","/assets/Settings-D32Qj7Ca.js","/assets/Trends-BVc0i8q5.js","/assets/csv-CkvfGzCZ.js","/assets/feeds-DZuw9EOh.js","/assets/icons-DVjE3ElW.js","/assets/index-Bz-k19Fw.css","/assets/index-CX6gN6q6.js","/assets/inter-latin-400-normal-C38fXH4l.woff2","/assets/inter-latin-500-normal-Cerq10X2.woff2","/assets/inter-latin-600-normal-LgqL8muc.woff2","/assets/papa-uG9AWU9K.js","/assets/react-CZAAIC1q.js","/assets/space-grotesk-latin-400-normal-CJ-V5oYT.woff2","/assets/space-grotesk-latin-500-normal-lFbtlQH6.woff2","/assets/space-grotesk-latin-600-normal-DjKNqYRj.woff2","/assets/zod-CuC_3cpb.js","/data/donki-events.json","/data/osd575-file-index.json","/data/osd575-submitted.csv","/data/osd575-transformed.csv","/data/osd575.json","/data/proton-flux.json","/data/source-manifest.json","/data/space-weather.json","/data/studies.json","/icons/icon-192.png","/icons/icon-512.png","/icons/mark.svg","/index.html","/licenses/PROHOR-MIT.txt","/licenses/THIRD-PARTY.txt","/manifest.webmanifest","/robots.txt","/sitemap.xml"]; // the install tier, also the CI parity check's name for it
+const RANGE=new RegExp("^bytes=(\\d*)-(\\d*)$");
+const FILES=["/assets/About-CdrOqSSO.js","/assets/Actions-DUTBQ41b.js","/assets/Environment-Cu2QjUdW.js","/assets/Evidence-SPq8eYWu.js","/assets/Handover-C5tY7ybI.js","/assets/Judges-Yk3yP8bd.js","/assets/Logbook-1-65-pNQ.js","/assets/Replay-Dpw9gU4u.js","/assets/Settings-DvxyBmh5.js","/assets/Trends-D7TLllJ6.js","/assets/csv-UcqM00sA.js","/assets/feeds-DZuw9EOh.js","/assets/icons-DVjE3ElW.js","/assets/index-Bcy1AsMb.js","/assets/index-D7y3Vnja.css","/assets/inter-latin-400-normal-C38fXH4l.woff2","/assets/inter-latin-500-normal-Cerq10X2.woff2","/assets/inter-latin-600-normal-LgqL8muc.woff2","/assets/papa-uG9AWU9K.js","/assets/react-CZAAIC1q.js","/assets/space-grotesk-latin-400-normal-CJ-V5oYT.woff2","/assets/space-grotesk-latin-500-normal-lFbtlQH6.woff2","/assets/space-grotesk-latin-600-normal-DjKNqYRj.woff2","/assets/zod-CuC_3cpb.js","/data/donki-events.json","/data/osd575-file-index.json","/data/osd575-submitted.csv","/data/osd575-transformed.csv","/data/osd575.json","/data/proton-flux.json","/data/source-manifest.json","/data/space-weather.json","/data/studies.json","/icons/icon-192.png","/icons/icon-512.png","/icons/mark.svg","/index.html","/licenses/PROHOR-MIT.txt","/licenses/THIRD-PARTY.txt","/manifest.webmanifest","/robots.txt","/sitemap.xml"]; // the install tier, also the CI parity check's name for it
 const CORE=FILES;
-const WARM=["/assets/inter-latin-400-normal-CyCys3Eg.woff","/assets/inter-latin-500-normal-BL9OpVg8.woff","/assets/inter-latin-600-normal-CiBQ2DWP.woff","/assets/space-grotesk-latin-400-normal-BnQMeOim.woff","/assets/space-grotesk-latin-500-normal-CNSSEhBt.woff","/assets/space-grotesk-latin-600-normal-BflQw4A9.woff","/docs/PROHOR_01_Mission_and_Demo.pdf","/docs/PROHOR_02_Data_and_Evidence.pdf","/docs/PROHOR_03_Technology_and_Method.pdf","/docs/PROHOR_04_Safety_Impact_and_Roadmap.pdf","/docs/PROHOR_Judges_Brief.pdf","/docs/PROHOR_Judges_Library.zip","/docs/PROHOR_Seven_Slide_Presentation.pdf","/media/prohor-30-second-transcript.txt","/media/prohor-30-second.mp4","/media/prohor-30-second.srt","/media/prohor-long-poster.jpg","/media/prohor-short-poster.jpg","/og-image.png","/slides/atlas.jpg","/slides/baseline.jpg","/slides/handover.jpg","/slides/nasa.jpg","/slides/offline.jpg"];
+const WARM=["/assets/inter-latin-400-normal-CyCys3Eg.woff","/assets/inter-latin-500-normal-BL9OpVg8.woff","/assets/inter-latin-600-normal-CiBQ2DWP.woff","/assets/space-grotesk-latin-400-normal-BnQMeOim.woff","/assets/space-grotesk-latin-500-normal-CNSSEhBt.woff","/assets/space-grotesk-latin-600-normal-BflQw4A9.woff","/docs/PROHOR_01_Mission_and_Demo.pdf","/docs/PROHOR_02_Data_and_Evidence.pdf","/docs/PROHOR_03_Technology_and_Method.pdf","/docs/PROHOR_04_Safety_Impact_and_Roadmap.pdf","/docs/PROHOR_Judges_Brief.pdf","/docs/PROHOR_Judges_Library.zip","/docs/PROHOR_Seven_Slide_Presentation.pdf","/media/prohor-30-second-transcript.txt","/media/prohor-30-second.mp4","/media/prohor-30-second.srt","/media/prohor-30-second.vtt","/media/prohor-four-minute-transcript.txt","/media/prohor-four-minute.srt","/media/prohor-four-minute.vtt","/media/prohor-long-poster.jpg","/media/prohor-short-poster.jpg","/og-image.png","/slides/atlas.jpg","/slides/baseline.jpg","/slides/handover.jpg","/slides/nasa.jpg","/slides/offline.jpg"];
 const SHELL=/^\/(index\.html|assets\/(index|react|zod|icons|csv)-.*\.(js|css))$/;
 
 async function cacheAll(list){
@@ -36,11 +36,60 @@ self.addEventListener('message',e=>{
   if(e.data&&e.data.type==='warm') e.waitUntil(warm());
 });
 
+/*
+ * A cached video is one full-body 200 response, but a <video> element asks for
+ * byte ranges. Answering those from the cache with a whole-body 200 is what made
+ * the pitch behave badly on desktop: seeking stalls or jumps. So media is served
+ * straight from the network while it is reachable -- the CDN answers ranges with
+ * real 206s -- and the cache is only used when the network fails, sliced to the
+ * range that was actually asked for.
+ */
+async function byRange(request,hit){
+  const blob=await hit.blob();
+  const total=blob.size;
+  const headers=new Headers(hit.headers);
+  headers.set('accept-ranges','bytes');
+  headers.delete('content-encoding');
+  const asked=request.headers.get('range');
+  const m=asked?RANGE.exec(asked.trim()):null;
+  if(!m){
+    headers.set('content-length',String(total));
+    return new Response(blob,{status:200,headers});
+  }
+  const from=m[1],to=m[2];
+  let start,end;
+  if(from===''){ start=Math.max(0,total-Number(to)); end=total-1; } // suffix: the last N bytes
+  else { start=Number(from); end=to===''?total-1:Number(to); }
+  if(!(start>=0)||!(end>=start)||start>=total){
+    headers.set('content-range','bytes */'+total);
+    headers.set('content-length','0');
+    return new Response(null,{status:416,headers});
+  }
+  start=Math.min(start,total-1);
+  end=Math.min(end,total-1);
+  const body=blob.slice(start,end+1);
+  headers.set('content-range','bytes '+start+'-'+end+'/'+total);
+  headers.set('content-length',String(body.size));
+  return new Response(body,{status:206,headers});
+}
+
+async function media(request,u){
+  try{
+    const res=await fetch(request);
+    if(res) return res;
+  }catch{}
+  const c=await caches.open(CACHE);
+  const hit=await c.match(u.origin+u.pathname);
+  if(hit) return byRange(request,hit);
+  const msg='This video is not available offline. The transcript is.';
+  return new Response(msg,{status:504,headers:{'content-type':'text/plain; charset=utf-8'}});
+}
+
 self.addEventListener('fetch',e=>{
   const u=new URL(e.request.url);
   if(e.request.method!=='GET'||u.origin!==location.origin) return;
   if(u.pathname.startsWith('/api/')) return;
-  if(FILM.test(u.pathname)&&!PITCH.test(u.pathname)) return; // the long film streams
+  if(FILM.test(u.pathname)){ e.respondWith(media(e.request,u)); return; }
 
   if(e.request.mode==='navigate'){
     e.respondWith((async()=>{
@@ -65,7 +114,8 @@ self.addEventListener('fetch',e=>{
     const hit=await c.match(e.request);
     if(hit) return hit;
     const res=await fetch(e.request);
-    if(res&&res.ok && /^\/(assets|data|icons|docs|media|slides)\//.test(u.pathname))
+    // Half a file is not a cache entry, so range requests are never stored.
+    if(res&&res.ok&&!e.request.headers.has('range')&&PATH_OK.test(u.pathname))
       await c.put(e.request,res.clone());
     return res;
   })());

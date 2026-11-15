@@ -16,7 +16,7 @@ new media surfaces and CI, no breaking API or data-schema change).
 - **Two recorded films, in the repository.** `public/media/prohor-30-second.mp4` (29.90 s,
   1920×1080, mono narration, burned-in captions) and `prohor-four-minute.mp4` (3:49.5). Both ship
   with `.srt` subtitles, plain-text transcripts and poster frames. They play in the overview and on
-  the judges' page, stream on demand, and are deliberately excluded from the offline precache.
+  the judges' page, are streamed on demand and are deliberately kept out of the install cache.
 - **Seven-slide deck in-app.** `public/docs/PROHOR_Seven_Slide_Presentation.pdf`, with the same
   seven slides as keyboard-operable images in the judges' view and a slide-by-slide live region.
   The deck is the primary artefact; the films are optional supporting material.
@@ -39,13 +39,13 @@ new media surfaces and CI, no breaking API or data-schema change).
 - "Nothing is a mock-up" is now qualified: the records are synthetic, the computation is real.
 - The 30-second demo row in SUBMISSION.md no longer says "add link"; it points at the file in the
   repository and states that the public URL only exists after deployment.
-- `public/media/` and `public/slides/` are excluded from the service-worker precache, so an offline
+- `public/media/` and `public/slides/` are warmed after first load rather than installed, so an offline
   install no longer implies a 20 MB download; the 30-second pitch itself **is** cached (2.7 MB).
 
 ## Verification for this draft
 
 Run on 2026-11-12 in a Linux container (Node 22 on the later re-run): `npm ci`, `npm run format:check`,
-`npm run typecheck`, `npm test` (204 passing), `npm run build` (offline cache: 42 core files, 24 warmed later), plus
+`npm run typecheck`, `npm test` (218 passing), `npm run build` (offline cache: 42 core files, 28 warmed later), plus
 `OFFLINE=1 npm start` asset smoke. Browser suites were **not** executed in that environment
 (Chromium cannot launch); see [docs/TEST-REPORT.md](TEST-REPORT.md). Do not paste these notes into a
 release until CI has run them.

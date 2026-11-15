@@ -83,8 +83,9 @@ export function Judges() {
         </div>
         <p className="media-footnote">
           The app footage shows the updated local build. The films use synthetic
-          demonstration readings; NASA study data are historical. Playback
-          requires a connection.
+          demonstration readings; NASA study data are historical. The pitch is
+          cached a few seconds after the first visit, so it also plays offline;
+          the four-minute film streams and needs a connection.
         </p>
       </section>
       <SlideDeck />
@@ -120,7 +121,7 @@ export function Judges() {
           </div>
           <p className="small muted">
             Static project document · No personal readings are included ·
-            Available offline after a successful cache
+            Offline a few seconds after the first visit
           </p>
         </div>
       </section>

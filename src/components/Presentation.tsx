@@ -109,6 +109,9 @@ export function ProjectVideo({
   const [offline, setOffline] = useState(
     typeof navigator !== "undefined" && navigator.onLine === false,
   );
+  // A video that will not start should say so and offer the file, instead of
+  // leaving a player that looks broken.
+  const [failed, setFailed] = useState(false);
   useEffect(() => {
     const sync = () => setOffline(!navigator.onLine);
     window.addEventListener("online", sync);
@@ -137,12 +140,33 @@ export function ProjectVideo({
           preload="none"
           poster={`/media/prohor-${isShort ? "short" : "long"}-poster.jpg`}
           aria-label={title}
+          aria-describedby={failed ? `${name}-failed` : undefined}
+          onError={() => setFailed(true)}
         >
-          <source src={`/media/${name}.mp4`} type="video/mp4" />
+          <source
+            src={`/media/${name}.mp4`}
+            type="video/mp4"
+            onError={() => setFailed(true)}
+          />
+          <track
+            kind="captions"
+            src={`/media/${name}.vtt`}
+            srcLang="en"
+            label="English captions"
+            default
+          />
           Your browser cannot play this video.{" "}
           <a href={`/media/${name}.mp4`}>Download {title}</a>.
         </video>
       </div>
+      {failed && (
+        <p className="video-failed" id={`${name}-failed`} role="status">
+          This video did not start.{" "}
+          <a href={`/media/${name}.mp4`}>Open it on its own</a> or read the{" "}
+          <a href={`/media/${name}-transcript.txt`}>transcript</a> — both work
+          without the player.
+        </p>
+      )}
       <div className="video-info">
         <span className="eyebrow">
           <Film size={14} aria-hidden="true" />{" "}
@@ -166,9 +190,11 @@ export function ProjectVideo({
           </a>
         </div>
         <p className="video-note">
-          English captions are embedded. The 30-second pitch is cached for
-          offline playback; the four-minute film streams on demand and needs a
-          connection — its transcript is always available offline.
+          English captions are in the player — turn them on with the CC button —
+          and downloadable as .srt. The 30-second pitch is cached a few seconds
+          after the first visit, so it also plays offline; the four-minute film
+          streams on demand and needs a connection — its transcript is always
+          available offline.
         </p>
       </div>
     </article>
