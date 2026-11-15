@@ -42,10 +42,12 @@ with sync_playwright() as p:
   # The page's own request goes through the service worker: it must come back as a real
   # 206 slice, online and then from the cached copy, or seeking on desktop misbehaves.
   page.goto(URL+'/#judges',wait_until='networkidle')
-  ranged=""""async()=>{const r=await fetch('/media/prohor-30-second.mp4',{headers:{Range:'bytes=100-199'}});return [r.status,r.headers.get('content-range'),(await r.arrayBuffer()).byteLength]}"""
-  online=page.evaluate(ranged);assert online[0]==206 and online[1].startswith('bytes 100-199/') and online[2]==100,online
+  ranged='''async()=>{const r=await fetch('/media/prohor-30-second.mp4',{headers:{Range:'bytes=100-199'}});return [r.status,r.headers.get('content-range'),(await r.arrayBuffer()).byteLength]}'''
+  online=page.evaluate(ranged)
+  assert online[0]==206 and str(online[1]).startswith('bytes 100-199/') and online[2]==100,online
   ctx.set_offline(True);page.reload(wait_until='domcontentloaded')
-  offline=page.evaluate(ranged);assert offline[0]==206 and offline[1].startswith('bytes 100-199/') and offline[2]==100,offline
+  offline=page.evaluate(ranged)
+  assert offline[0]==206 and str(offline[1]).startswith('bytes 100-199/') and offline[2]==100,offline
   ctx.set_offline(False)
   print('PASS',width,'byte ranges served as 206 through the worker, online and offline',flush=True)
   assert not errors,errors;print('PASS',width,'layout, video links, slide navigation, range and cache policy',flush=True);ctx.close()
