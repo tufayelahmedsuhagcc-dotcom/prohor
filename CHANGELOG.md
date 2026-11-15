@@ -26,7 +26,7 @@ Notes describe the shipped application. Release dates are deliberately omitted; 
   the exclusion rule had swept up with the film itself. The film is still never cached.
 - Judges copy no longer says playback requires a connection; the pitch plays offline once warmed.
 - Every one of the twelve routes is now checked at 320, 390 and 1440 px in the push job for a single
-  `h1` and for sideways scrolling, not just the hand-run axe sweep. 218 tests total.
+  `h1` and for sideways scrolling, not just the hand-run axe sweep. 219 tests total.
 
 ## Unreleased — loading and refreshing made faster
 
@@ -50,7 +50,7 @@ max-age=31536000, immutable` for fingerprinted `/assets/` and `/icons/`; before 
   longer invalidates the React runtime in every visitor's cache.
 - 24 tests in `tests/performance.test.ts` enforce the header policy, the two cache tiers and the
   install budget, execute the generated worker under stubs, and fail if a routed view has no
-  prefetch loader. 218 tests total.
+  prefetch loader. 219 tests total.
 
 ## Unreleased — dark mode
 

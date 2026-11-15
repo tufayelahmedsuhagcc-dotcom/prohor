@@ -41,7 +41,7 @@ with sync_playwright() as p:
   cached=page.evaluate("async()=>{const keys=await caches.keys();const c=await caches.open(keys.find(x=>x.startsWith('prohor-')));return [(await c.match('/media/prohor-30-second.mp4'))!==undefined,(await c.match('/docs/PROHOR_Seven_Slide_Presentation.pdf'))!==undefined,(await c.match('/media/prohor-four-minute.mp4'))!==undefined]}");assert cached==[True,True,False],cached
   # The page's own request goes through the service worker: it must come back as a real
   # 206 slice, online and then from the cached copy, or seeking on desktop misbehaves.
-  await page.goto(URL+'/#judges',wait_until='networkidle')
+  page.goto(URL+'/#judges',wait_until='networkidle')
   ranged=""""async()=>{const r=await fetch('/media/prohor-30-second.mp4',{headers:{Range:'bytes=100-199'}});return [r.status,r.headers.get('content-range'),(await r.arrayBuffer()).byteLength]}"""
   online=page.evaluate(ranged);assert online[0]==206 and online[1].startswith('bytes 100-199/') and online[2]==100,online
   ctx.set_offline(True);page.reload(wait_until='domcontentloaded')

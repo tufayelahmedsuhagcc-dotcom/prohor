@@ -1,6 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, readdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { TeamSection } from "../src/components/TeamSection";
 import { TEAM } from "../src/data/team";
 import { ProjectVideo } from "../src/components/Presentation";
@@ -60,5 +65,38 @@ describe("video player", () => {
     expect(html).toContain('href="/media/prohor-four-minute.mp4"');
     expect(html).toContain('href="/media/prohor-four-minute-transcript.txt"');
     expect(html).toContain('href="/media/prohor-four-minute.srt"');
+  });
+});
+
+describe("browser test scripts", () => {
+  // presentation.py once shipped with an `await` in sync Playwright code: valid Python
+  // syntax, so ast.parse passed, and it only failed when CI finally ran it. Compile them.
+  it("all import cleanly", () => {
+    let python = "";
+    for (const bin of ["python3", "python"]) {
+      try {
+        execFileSync(bin, ["--version"], { stdio: "ignore" });
+        python = bin;
+        break;
+      } catch {
+        /* try the next name */
+      }
+    }
+    if (!python) return; // no interpreter here; CI runs the scripts themselves
+    const cache = mkdtempSync(join(tmpdir(), "prohor-pyc-"));
+    const dir = new URL("../tests/", import.meta.url);
+    const scripts = readdirSync(dir).filter((f) => f.endsWith(".py"));
+    expect(scripts.length).toBeGreaterThan(5);
+    for (const script of scripts) {
+      execFileSync(
+        python,
+        ["-m", "py_compile", fileURLToPath(new URL(script, dir))],
+        {
+          stdio: "pipe",
+          env: { ...process.env, PYTHONPYCACHEPREFIX: cache },
+        },
+      );
+    }
+    rmSync(cache, { recursive: true, force: true });
   });
 });
