@@ -81,7 +81,7 @@ interface revision.
 | TypeScript (`npm run typecheck`)                         | Passed                                                                                                        |
 | Formatting (`npm run format:check`)                      | Passed                                                                                                        |
 | Production build                                         | Passed; app generated in `web/`                                                                               |
-| Automated unit/adapter tests                             | **127 passed, 0 failed**, five test files                                                                     |
+| Automated unit/adapter tests                             | **128 passed, 0 failed**, five test files                                                                     |
 | Main end-to-end workflow                                 | **48 checks passed**                                                                                          |
 | Browser hardening, mobile accessibility and 320px layout | **36 checks passed**                                                                                          |
 | Desktop/mobile route sweep                               | **22 route/viewport checks**, no uncaught page errors or page-level horizontal overflow                       |
@@ -232,3 +232,9 @@ synthetic fixture content, not a real patient record.
 - NASA acceptance, eligibility or a guaranteed competition result.
 
 The app is ready to run and review within its stated prototype scope. Passing these tests must not be presented as medical, regulatory or NASA approval.
+
+## Correction
+
+The summary table once read **127** unit tests. That was a transcription error, not a lost test:
+`npm test` reports 128 across five files (engine 61, storage 24, hardening 21, research 11,
+feeds 11), re-measured on 2026-11-15 for this revision.

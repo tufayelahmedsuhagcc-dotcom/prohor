@@ -4709,3 +4709,63 @@ html[data-motion="reduced"] *::after {
     padding: 20px;
   }
 }
+
+/* Judge shortcuts: the three links a first-time visitor needs, above the fold. */
+.judge-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  border: 1px solid var(--line, #dbe6df);
+  border-radius: 14px;
+  background: var(--panel, #ffffff);
+}
+.judge-banner-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.judge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line, #dbe6df);
+  border-radius: 999px;
+  background: var(--panel, #ffffff);
+  color: var(--ink, #20372c);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.judge-chip:hover {
+  border-color: var(--accent, #146e53);
+}
+.judge-chip-primary {
+  background: var(--accent, #146e53);
+  border-color: var(--accent, #146e53);
+  color: #ffffff;
+}
+.judge-chip-primary:hover {
+  filter: brightness(1.06);
+}
+.judge-banner-steps {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted, #5c7065);
+}
+@media (max-width: 640px) {
+  .judge-banner-links {
+    width: 100%;
+  }
+  .judge-chip {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}

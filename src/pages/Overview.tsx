@@ -13,6 +13,9 @@ import {
   Database,
   ChevronRight,
   Focus,
+  Play,
+  BookOpen,
+  FileText,
 } from "lucide-react";
 import { useProhor } from "../lib/context";
 import {
@@ -236,6 +239,40 @@ export function Overview() {
           <ArrowUpRight size={15} />
         </button>
       </div>
+      <nav className="judge-banner" aria-label="Judge shortcuts">
+        <div className="judge-banner-links">
+          <button
+            className="judge-chip judge-chip-primary"
+            onClick={() =>
+              document
+                .querySelector(".landing-film")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" })
+            }
+          >
+            <Play size={14} aria-hidden="true" />
+            Watch 30 seconds
+          </button>
+          <button className="judge-chip" onClick={() => c.setPage("judges")}>
+            <BookOpen size={14} aria-hidden="true" />
+            Judges’ resources
+            <ArrowUpRight size={13} aria-hidden="true" />
+          </button>
+          <a
+            className="judge-chip"
+            href="/docs/PROHOR_Seven_Slide_Presentation.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FileText size={14} aria-hidden="true" />
+            Seven-slide deck (PDF)
+          </a>
+        </div>
+        <p className="judge-banner-steps">
+          <strong>New here?</strong> Three steps: see the change, explore the
+          NASA evidence, prepare a handover. Every screen is labelled synthetic
+          or research data.
+        </p>
+      </nav>
       <section className="judge-path" aria-labelledby="judge-path-title">
         <div className="judge-path-intro">
           <span className="eyebrow">A QUICK GUIDED TOUR / SYNTHETIC DEMO</span>
