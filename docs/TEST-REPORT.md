@@ -17,10 +17,14 @@ effectiveness.
   offline reload of the shell, the NASA CSV integrity check and the judges' PDF.
 - Build: offline cache `prohor-v3-309d4f2df730` — **42 core files / 0.94 MB** at install, 28 files /
   4.8 MB warmed after first visit. Committed `web/` matches a fresh build.
-- The accessibility job is still `workflow_dispatch`-only and was not dispatched in this run, so it
-  shows as skipped. **The axe sweep has not been re-run since dark mode shipped.** The contrast
-  figures in [ACCESSIBILITY.md](ACCESSIBILITY.md) are computed from the token palette, not measured
-  in a browser.
+- 172 browser checks passed in that run, including an **axe scan of all twelve routes at 320 px**
+  under the shipped Content-Security-Policy with **zero violations**, and byte-range playback of the
+  pitch through the service worker online and offline at 320, 390, 768 and 1440 px.
+- The separate accessibility job (`browser_sweep.py` at 1440 px plus `theme_checks.py`) is still
+  `workflow_dispatch`-only and was not dispatched, so it shows as skipped. **The dark palette has
+  not been axe-scanned at a wide viewport**, and the contrast figures in
+  [ACCESSIBILITY.md](ACCESSIBILITY.md) are computed from the token palette rather than measured in a
+  browser.
 
 ## 2026-11-15 · latest continuous-integration run on `main`
 

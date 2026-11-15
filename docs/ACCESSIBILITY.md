@@ -30,16 +30,20 @@ page states what was implemented, what was actually measured, and what remains u
 Historical and current results are kept apart on purpose, because a number without a date and a
 revision is not evidence.
 
-| Run                                  | Build / revision                    | Engine                                  | Viewports                   | Result                                                                                                                                                                      |
-| ------------------------------------ | ----------------------------------- | --------------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Recorded in this document previously | v3.0 build, pre-`f0a2` docs refresh | Chromium (Playwright) + axe-core 4.11.0 | 1440×1050, 390×844, 320×720 | 0 axe violations across 24 view scans (12 routes × 2 widths) plus 7 dialog/menu states; no page-level overflow                                                              |
-| 2026-11-12 review branch             | `review/2026-11-12-hardening`       | **not executed**                        | —                           | The review sandbox cannot launch Chromium (`libnspr4.so`, no root), so nothing was re-measured. The new CI `browser-smoke` job is the mechanism that will produce this row. |
+| Run                                    | Build / revision                                            | Engine                                                     | Viewports                   | Result                                                                                                                                                                                                                                                                                               |
+| -------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Recorded in this document previously   | v3.0 build, pre-`f0a2` docs refresh                         | Chromium (Playwright) + axe-core 4.11.0                    | 1440×1050, 390×844, 320×720 | 0 axe violations across 24 view scans (12 routes × 2 widths) plus 7 dialog/menu states; no page-level overflow                                                                                                                                                                                       |
+| 2026-11-12 review branch               | `review/2026-11-12-hardening`                               | **not executed**                                           | —                           | The review sandbox cannot launch Chromium (`libnspr4.so`, no root), so nothing was re-measured. The new CI `browser-smoke` job is the mechanism that will produce this row.                                                                                                                          |
+| 2026-11-15 final CI run `b43722130426` | `b22574d` (after dark mode, the two-tier cache and the CSP) | Chromium (Playwright) + axe-core, WCAG 2.0/2.1 A + AA tags | 320×720                     | **0 violations across all 12 routes**, under the shipped Content-Security-Policy, in the same run that executes 172 browser checks. The wide-viewport sweep (`browser_sweep.py`, 1440 px, with screenshots) and `theme_checks.py` remain un-dispatched because that job is `workflow_dispatch`-only. |
 
 The 12 routes are: overview, atlas, logbook, trends, actions, evidence, environment, replay,
 handover, judges, settings, about — eleven in the navigation plus About.
 
-- Zero violations under the configured **axe-core 4.11.0** rule set (WCAG 2.0/2.1 A + AA) in the
-  earlier run described above.
+- Zero violations under the configured **axe-core** rule set (WCAG 2.0/2.1 A + AA) in the earlier
+  run, and zero again in the final run at 320 px on all twelve routes.
+- The dark palette has not been scanned by axe at a wide viewport: the last wide run predates it.
+  Tokens were chosen to clear AA (worst measured pairing 4.84:1) and the mobile scan covers the same
+  components, but that is a computed argument, not a scan of the dark theme at 1440 px.
 - Route sweep at 1440×1050, 390×844 and 320×720 with no page-level horizontal overflow in that
   same run.
 - **Contrast measured from the shipped CSS tokens** (WCAG 2.1 relative-luminance formula, sRGB,
