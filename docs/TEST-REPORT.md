@@ -5,6 +5,23 @@ The full suite is reproducible with the commands in [the README](../README.md#ve
 Passing these scans is not formal accessibility certification and says nothing about clinical
 effectiveness.
 
+## 2026-11-15 · final submission run on `main`
+
+- Run: [actions/runs/43720242300](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43720242300)
+  on commit `fde9903` — **verify: success** (format, typecheck, **219 tests in 8 files**, build,
+  committed-build parity, offline feed smoke) and **browser smoke: success** (Playwright against
+  `OFFLINE=1` snapshots: workflow checks, hardening, judges resources, presentation).
+- What the browser job now covers beyond the earlier runs: every one of the twelve routes at 320,
+  390 and 1440 px asserting a single `h1` and no horizontal scroll; a byte-range request for the
+  pitch through the service worker returning a real `206`, online and again from the cache offline;
+  offline reload of the shell, the NASA CSV integrity check and the judges' PDF.
+- Build: offline cache `prohor-v3-309d4f2df730` — **42 core files / 0.94 MB** at install, 28 files /
+  4.8 MB warmed after first visit. Committed `web/` matches a fresh build.
+- The accessibility job is still `workflow_dispatch`-only and was not dispatched in this run, so it
+  shows as skipped. **The axe sweep has not been re-run since dark mode shipped.** The contrast
+  figures in [ACCESSIBILITY.md](ACCESSIBILITY.md) are computed from the token palette, not measured
+  in a browser.
+
 ## 2026-11-15 · latest continuous-integration run on `main`
 
 - Run: [actions/runs/43711349754](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43711349754)
@@ -14,7 +31,7 @@ effectiveness.
 - Previous green run: [actions/runs/43711219616](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43711219616)
   on `be7f7c7` (the two new feeds, 136 tests); before that,
   [actions/runs/43693654614](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43693654614)
-  on `53a9d01` — the commit the `v3.0.0-submission` tag points at — with 128 tests.
+  on `53a9d01` — the commit the `v3.0.0-submission` tag pointed at until the final re-point — with 128 tests.
 - The accessibility job is `workflow_dispatch`-only and was not dispatched, so it shows as skipped
   in every run above — that is a scope setting, not a pass. The axe sweep has not been re-run since
   the Environment panels were added.

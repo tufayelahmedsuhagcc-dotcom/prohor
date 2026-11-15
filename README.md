@@ -140,7 +140,7 @@ to the bundled dated snapshots, which the interface labels as such.
 
 ```bash
 npm run typecheck    # TypeScript, strict
-npm test             # 128 unit + adapter tests
+npm test             # 219 unit + adapter tests in 8 files
 npm run build        # production build
 npm run format:check # Prettier
 ```
@@ -150,9 +150,11 @@ Browser workflows (Playwright + axe-core) run against the production server:
 ```bash
 python -m pip install -r requirements-test.txt
 python -m playwright install chromium
-python tests/e2e.py
+python tests/e2e.py              # workflows, plus all 12 routes at 320/390/1440 px
 python tests/browser_hardening.py
-python tests/browser_sweep.py
+python tests/judges_resources.py
+python tests/presentation.py     # films, slides, offline cache, byte ranges
+python tests/browser_sweep.py    # axe-core, on demand
 python tests/theme_checks.py
 ```
 

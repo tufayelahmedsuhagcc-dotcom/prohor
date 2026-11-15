@@ -23,6 +23,17 @@ Prior winner examples are inspiration, not proof of current rules or a guarantee
 
 ## Videos and seven-slide presentation
 
-The judges' page includes the recorded 30-second pitch (29.90 s, 1920×1080, mono narration, burned-in captions) and the 3:49.5 judging film, caption/transcript links, an interactive seven-slide overview, and a downloadable seven-page PDF (`public/docs/PROHOR_Seven_Slide_Presentation.pdf`). The overview page also features the short film. Video files in `public/media/` are streamed on demand and excluded from the offline service-worker cache to avoid downloading ~20 MB on installation; playback needs a network connection. Their existing captions are burned in, with downloadable transcripts and SRT files. PDF and presentation screenshots are cached after successful initial service-worker installation.
+The judges' page includes the recorded 30-second pitch (29.9 s, 1920×1080, narrated) and the
+3:49.5 judging film, caption and transcript links, an interactive seven-slide overview, and a
+downloadable seven-page PDF (`public/docs/PROHOR_Seven_Slide_Presentation.pdf`). The overview page
+also features the short film.
+
+Playback and caching, as they actually behave: the 30-second pitch is cached in the background a few
+seconds after the first visit and then plays offline; the four-minute film streams on demand with byte
+ranges and needs a connection. Neither film is downloaded during service-worker install, which is why
+a first visit costs 0.94 MB rather than the media library. Captions load from a `<track>` element fed
+by the `.vtt` converted from each `.srt`, and the same `.srt` plus a plain-text transcript are
+downloadable. The judges' brief, the four dossiers and the deck are also cached, in the same
+background pass rather than at install, so they are offline from a few seconds after the first visit.
 
 The slide text is edited in `src/components/Presentation.tsx`. The PDF is generated separately by `scripts/generate_presentation.py` using ReportLab; when changing content, update and check both versions. App footage is from the updated local build, not evidence that the currently deployed website already includes it. Neither film has been uploaded to a video host and no public video URL has been added to any submission form — the files live in this repository, and publishing them is the owner's decision. The presentation and videos describe synthetic demonstration readings separately from historical NASA research.
