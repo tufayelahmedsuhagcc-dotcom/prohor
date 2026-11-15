@@ -152,9 +152,27 @@ if a route exists without a loader.
 
 Measured effects, same machine, `npm run build`:
 
-| Before                                                                                 | After                                                                                                        |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Repeat visit re-validates 421 KB JS + 72 KB CSS + fonts (`max-age=0, must-revalidate`) | 0 bytes: `immutable`, one year                                                                               |
-| Install downloads 66 files / 5.46 MB before the app is usable                          | 42 files / 0.89 MB, then 24 files / 4.57 MB in the background                                              |
-| Initial JS graph 421 KB raw / 131 KB gzip in one file                                  | 408 KB raw / 125 KB gzip, split into cache-stable vendor chunks; `papaparse` (19 KB) off the first-load path |
-| A failed optional file breaks the whole install                                        | Only a missing shell fails install                                                                           |
+| Before                                                                                   | After                                                                                                                                         |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Repeat visit re-validates 421 KB JS + 72 KB CSS + fonts (`max-age=0, must-revalidate`)   | 0 bytes: `immutable`, one year                                                                                                                |
+| Install downloads 66 files / 5.46 MB before the app is usable                            | 42 files / 0.89 MB, then 24 files / 4.57 MB in the background                                                                                 |
+| Initial JS + CSS 144.7 KB gzip, in one 422 KB JS file that changes when app code changes | 138.7 KB gzip across five chunks; `papaparse` (7 KB gzip) off the first-load path, React and zod in chunks an app-only deploy does not rename |
+| A failed optional file breaks the whole install                                          | Only a missing shell fails install                                                                                                            |
+
+**Checked against the live deployment** (`dpl_CifKoWRJ8DWLVALR7gjP3w7diHQm`, commit `691af85`):
+
+| Request              | `cache-control` returned                             |
+| -------------------- | ---------------------------------------------------- |
+| `/assets/index-*.js` | `public, max-age=31536000, immutable`                |
+| `/icons/mark.svg`    | `public, max-age=31536000, immutable`                |
+| `/sw.js`             | `no-cache`                                           |
+| `/data/studies.json` | `public, max-age=3600, stale-while-revalidate=86400` |
+| `/docs/*.pdf`        | `public, max-age=604800`                             |
+| `/media/*.mp4`       | `public, max-age=604800`                             |
+| `/` (HTML)           | `public, max-age=0, must-revalidate`                 |
+
+The served `sw.js` reports cache `prohor-v3-5d03d27ffe9c` with 42 core and 24 warm entries, and the
+five entry assets transfer 145,359 bytes compressed. What that table does **not** prove: no browser
+was available here, so the repeat-visit saving is verified as a header value, not as a measured
+second load, and no field timing (LCP, TTFB) was captured. The CI browser suite does exercise the
+same worker offline, and it passes.
