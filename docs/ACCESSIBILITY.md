@@ -96,7 +96,7 @@ accessibility in mind but **not re-scanned** (see the table above):
 - The deck is a keyboard-operable region: previous/next buttons, seven labelled dot buttons with
   `aria-current`, and a polite live region announcing the slide change. Each slide image carries
   alt text; the PDF is downloadable and readable outside the app.
-- The 30-second pitch is precached (2.7 MB) so it plays offline; the four-minute film streams,
+- The 30-second pitch is cached in the background right after the first visit (install no longer downloads it), so it plays offline from then on; the four-minute film streams,
   and when the browser reports no connection the player says so and links the precached transcript
   instead of failing silently.
 

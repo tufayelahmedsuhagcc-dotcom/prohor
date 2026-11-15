@@ -9,6 +9,7 @@ import "./styles.css";
 import App, { ErrorBoundary } from "./App";
 import { Provider } from "./lib/context";
 import { applyTheme, getTheme } from "./lib/theme";
+import { prefetchRoutes, warmOfflineCache } from "./lib/prefetch";
 
 // index.html applies this before first paint; this is the belt to that braces
 // for the case where the inline script was blocked by a browser setting.
@@ -20,3 +21,14 @@ createRoot(document.getElementById("root")!).render(
     </Provider>
   </ErrorBoundary>,
 );
+
+// After the first screen is on glass: warm the other views and ask the service
+// worker to cache the heavy extras in the background.
+if (typeof window !== "undefined") {
+  const after = () => {
+    prefetchRoutes();
+    warmOfflineCache();
+  };
+  if (document.readyState === "complete") after();
+  else window.addEventListener("load", after, { once: true });
+}

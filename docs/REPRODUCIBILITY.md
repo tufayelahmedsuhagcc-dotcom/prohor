@@ -21,19 +21,19 @@ for the optional browser suites and PDF generators.
 ```bash
 npm ci                 # installs from package-lock.json, no network surprises
 npm run typecheck      # tsc -b, strict
-npm test               # 189 tests in 6 files
+npm test               # 204 tests in 7 files
 npm run format:check   # Prettier
 npm run build          # vite build + service worker
 ```
 
 Expected numbers, so you can tell a real pass from a partial one:
 
-| Signal               | Expected                                                                              |
-| -------------------- | ------------------------------------------------------------------------------------- |
-| Unit tests           | **189 passed** — engine 61, storage 24, hardening 25, research 11, feeds 16, theme 52 |
-| Precache             | `Offline precache: 66 files; cache prohor-v3-<12 hex>`                                |
-| Committed build diff | `git status --porcelain -- web/` prints **nothing** after `npm run build`             |
-| Initial JS bundle    | ≈ 420 KB raw / ≈ 130 KB gzip, plus per-route chunks (lazy-loaded views)               |
+| Signal               | Expected                                                                                              |
+| -------------------- | ----------------------------------------------------------------------------------------------------- |
+| Unit tests           | **204 passed** — engine 61, storage 24, hardening 25, research 11, feeds 16, theme 52, performance 15 |
+| Offline cache        | `Offline cache: 42 core files, 24 warmed later; cache prohor-v3-<12 hex>`                             |
+| Committed build diff | `git status --porcelain -- web/` prints **nothing** after `npm run build`                             |
+| Initial JS bundle    | ≈ 420 KB raw / ≈ 130 KB gzip, plus per-route chunks (lazy-loaded views)                               |
 
 ## Run it
 

@@ -1,8 +1,10 @@
 """Check the two videos, slide controls, PDF and offline caching on several screen widths.
 
-Cache policy under test (decided 2026-11-15): the 30-second pitch and the deck PDF are
-precached so the headline demo really plays offline; the 3:49.5 film streams instead, because
-caching it would add ~6.6 MB to every first install.
+Cache policy under test (revised 2026-11-15 for first-load speed): install caches only the
+app shell, data and woff2 fonts (~0.9 MB). Films, PDFs, the ZIP, posters and slide images are
+cached in the background once the first screen is idle, so they are offline from a few seconds
+after the first visit instead of being downloaded before anything renders. The 3:49.5 film is
+never cached: it streams with range requests and is excluded from both tiers.
 """
 import os
 import pathlib
@@ -29,6 +31,13 @@ with sync_playwright() as p:
   for path in ['/media/prohor-30-second.mp4','/media/prohor-four-minute.mp4']:
    res=ctx.request.get(URL+path,headers={'Range':'bytes=0-1023'}); assert res.status==206,(path,res.status);assert 'video/mp4' in res.headers.get('content-type','');assert len(res.body())==1024
   pdf=ctx.request.get(URL+'/docs/PROHOR_Seven_Slide_Presentation.pdf');assert pdf.status==200 and pdf.body().startswith(b'%PDF-')
-  page.evaluate('navigator.serviceWorker.ready');page.wait_for_function('!!navigator.serviceWorker.controller');cached=page.evaluate("async()=>{const keys=await caches.keys();const c=await caches.open(keys.find(x=>x.startsWith('prohor-')));return [(await c.match('/media/prohor-30-second.mp4'))!==undefined,(await c.match('/docs/PROHOR_Seven_Slide_Presentation.pdf'))!==undefined,(await c.match('/media/prohor-four-minute.mp4'))!==undefined]}");assert cached==[True,True,False],cached
+  page.evaluate('navigator.serviceWorker.ready');page.wait_for_function('!!navigator.serviceWorker.controller')
+  # The shell is already cached at this point; the extras arrive from the background warm.
+  shell=page.evaluate("async()=>{const keys=await caches.keys();const c=await caches.open(keys.find(x=>x.startsWith('prohor-')));return [(await c.match('/index.html'))!==undefined,(await c.match('/data/studies.json'))!==undefined]}");assert shell==[True,True],shell
+  for _ in range(60):
+   warm=page.evaluate("async()=>{const keys=await caches.keys();const c=await caches.open(keys.find(x=>x.startsWith('prohor-')));return (await c.match('/media/prohor-30-second.mp4'))!==undefined&&(await c.match('/docs/PROHOR_Seven_Slide_Presentation.pdf'))!==undefined}")
+   if warm: break
+   page.wait_for_timeout(500)
+  cached=page.evaluate("async()=>{const keys=await caches.keys();const c=await caches.open(keys.find(x=>x.startsWith('prohor-')));return [(await c.match('/media/prohor-30-second.mp4'))!==undefined,(await c.match('/docs/PROHOR_Seven_Slide_Presentation.pdf'))!==undefined,(await c.match('/media/prohor-four-minute.mp4'))!==undefined]}");assert cached==[True,True,False],cached
   assert not errors,errors;print('PASS',width,'layout, video links, slide navigation, range and cache policy',flush=True);ctx.close()
  b.close()

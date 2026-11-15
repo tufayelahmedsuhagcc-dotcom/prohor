@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { readFileSync } from "node:fs";
 import { validFeed } from "../src/compute/feedValidation";
-import { parseCsv, csvExport, makeReading } from "../src/lib/storage";
+import { makeReading } from "../src/lib/storage";
+import { csvExport, parseCsv } from "../src/lib/csv";
 import { quantile, assess } from "../src/compute/engine";
 import { DEMO } from "../src/data/demo";
 // Shared Node/Vercel runtime module; types live in server/feeds.d.mts.

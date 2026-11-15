@@ -34,38 +34,39 @@ import {
 } from "lucide-react";
 import { useProhor } from "./lib/context";
 import { useTheme } from "./lib/useTheme";
+import { ROUTE_MODULES } from "./lib/prefetch";
 import { Modal, Notice } from "./components/UI";
 import { LogModal } from "./components/LogModal";
 import { Overview, AtlasPanel } from "./pages/Overview";
 const Trends = lazy(() =>
-  import("./pages/Trends").then((m) => ({ default: m.Trends })),
+  ROUTE_MODULES.trends().then((m) => ({ default: m.Trends })),
 );
 const Logbook = lazy(() =>
-  import("./pages/Logbook").then((m) => ({ default: m.Logbook })),
+  ROUTE_MODULES.logbook().then((m) => ({ default: m.Logbook })),
 );
 const Actions = lazy(() =>
-  import("./pages/Actions").then((m) => ({ default: m.Actions })),
+  ROUTE_MODULES.actions().then((m) => ({ default: m.Actions })),
 );
 const Evidence = lazy(() =>
-  import("./pages/Evidence").then((m) => ({ default: m.Evidence })),
+  ROUTE_MODULES.evidence().then((m) => ({ default: m.Evidence })),
 );
 const Environment = lazy(() =>
-  import("./pages/Environment").then((m) => ({ default: m.Environment })),
+  ROUTE_MODULES.environment().then((m) => ({ default: m.Environment })),
 );
 const Replay = lazy(() =>
-  import("./pages/Replay").then((m) => ({ default: m.Replay })),
+  ROUTE_MODULES.replay().then((m) => ({ default: m.Replay })),
 );
 const Handover = lazy(() =>
-  import("./pages/Handover").then((m) => ({ default: m.Handover })),
+  ROUTE_MODULES.handover().then((m) => ({ default: m.Handover })),
 );
 const Settings = lazy(() =>
-  import("./pages/Settings").then((m) => ({ default: m.Settings })),
+  ROUTE_MODULES.settings().then((m) => ({ default: m.Settings })),
 );
 const About = lazy(() =>
-  import("./pages/About").then((m) => ({ default: m.About })),
+  ROUTE_MODULES.about().then((m) => ({ default: m.About })),
 );
 const Judges = lazy(() =>
-  import("./pages/Judges").then((m) => ({ default: m.Judges })),
+  ROUTE_MODULES.judges().then((m) => ({ default: m.Judges })),
 );
 const NAV = [
   {

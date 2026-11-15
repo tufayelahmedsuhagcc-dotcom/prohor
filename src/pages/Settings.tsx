@@ -15,14 +15,8 @@ import {
 import { Panel, SectionHead, Notice, Modal } from "../components/UI";
 import { useProhor } from "../lib/context";
 import { useTheme } from "../lib/useTheme";
-import {
-  download,
-  parseCsv,
-  validateStore,
-  emptyStore,
-  csvExport,
-  STORE_KEY,
-} from "../lib/storage";
+import { download, validateStore, emptyStore, STORE_KEY } from "../lib/storage";
+import { csvExport, parseCsv } from "../lib/csv";
 import type { Reading, Store } from "../types";
 export function Settings() {
   const c = useProhor(),

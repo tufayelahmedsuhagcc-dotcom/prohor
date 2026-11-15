@@ -7,7 +7,7 @@ The Overview tour and navigation both lead to `#judges`. The hub includes a shor
 3. **Technology & method** — architecture, baseline math, integration and reproducibility.
 4. **Safety, impact & roadmap** — privacy, limitations and proposed validation.
 
-`public/docs/PROHOR_Judges_Library.zip` contains the four dossiers. A production build includes all PDFs and the ZIP in the service-worker precache. Offline access requires an initial successful visit and functioning, retained browser storage.
+`public/docs/PROHOR_Judges_Library.zip` contains the four dossiers. A production build caches the PDFs and the ZIP in the background a few seconds after the judges' first visit (install itself only caches the app shell, so the page opens fast). Offline access requires that first successful visit and functioning, retained browser storage.
 
 ## Editing and regenerating
 

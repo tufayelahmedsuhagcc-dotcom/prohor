@@ -3,12 +3,11 @@ import {
   emptyStore,
   validateStore,
   makeReading,
-  parseCsv,
-  csvExport,
   readStore,
   writeStore,
   STORE_KEY,
 } from "../src/lib/storage";
+import { csvExport, parseCsv } from "../src/lib/csv";
 let map = new Map<string, string>();
 beforeEach(() => {
   map = new Map();

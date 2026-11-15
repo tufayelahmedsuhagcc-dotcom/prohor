@@ -2,6 +2,30 @@
 
 Notes describe the shipped application. Release dates are deliberately omitted; the git history is the timeline.
 
+## Unreleased — loading and refreshing made faster
+
+- **Repeat visits stop re-downloading the app.** `vercel.json` now sends `public,
+max-age=31536000, immutable` for fingerprinted `/assets/` and `/icons/`; before this, every
+  refresh re-validated ~440 KB of JS and CSS and the fonts. `/data/` gets an hour with
+  `stale-while-revalidate`, `/docs/`, `/media/` and `/slides/` a week, `/sw.js` stays `no-cache`, and
+  HTML keeps revalidating so a deploy is still seen.
+- **Install caches 0.89 MB instead of 5.46 MB.** The service worker is now two-tiered: install
+  stores the shell, data and woff2 fonts (42 files); films, PDFs, the ZIP, posters and slide images
+  (24 files, 4.57 MB) are fetched by a background warm the page triggers after `load`. Install is
+  per-file, so one 404 no longer fails the whole cache, and it only fails if the shell itself is
+  missing. The 3:49.5 film is still never cached.
+- **A navigation is answered within 3 seconds** — network first, cached shell after that deadline.
+- **Idle prefetch.** The ten lazy views are fetched with `requestIdleCallback` after load, so
+  switching views is a cache hit. `src/lib/prefetch.ts` is the single list of route loaders, used by
+  both `App.tsx` and the prefetcher.
+- **The CSV parser left the first-load path.** `parseCsv`/`csvExport` moved to `src/lib/csv.ts`
+  (papaparse, 19 KB raw / 7 KB gzip), imported only by the views that import or export CSV.
+- Vendor chunks (`react`, `zod`, `icons`, `papa`) are split so a deploy that only changes app code no
+  longer invalidates the React runtime in every visitor's cache.
+- 15 new tests in `tests/performance.test.ts` enforce the header policy, the two cache tiers and the
+  install budget, execute the generated worker under stubs, and fail if a routed view has no
+  prefetch loader. 204 tests total.
+
 ## Unreleased — dark mode
 
 - **A theme switch.** Light stays the default; the topbar switch and the Settings row toggle

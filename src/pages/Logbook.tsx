@@ -3,7 +3,8 @@ import { Plus, Download, Trash2, BookOpen } from "lucide-react";
 import { useProhor } from "../lib/context";
 import { SIGNALS, SIGNAL_KEYS } from "../data/catalog";
 import { Panel, SectionHead, Notice, Modal, Empty } from "../components/UI";
-import { csvExport, download } from "../lib/storage";
+import { download } from "../lib/storage";
+import { csvExport } from "../lib/csv";
 export function Logbook() {
   const c = useProhor(),
     [filter, setFilter] = useState("all"),

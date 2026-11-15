@@ -131,7 +131,7 @@ does not flag.
 
 ```text
 vite build → web/  (content-hashed assets)
-scripts/build-sw.mjs → web/sw.js  (precache built app, data and judges' resources; API never cached)
+scripts/build-sw.mjs → web/sw.js  (install: app + data + woff2 · background warm: media, PDFs; API never cached)
 server/start.mjs → static files + /api/feeds      [Node]
 api/feeds.mjs     → same handler as a Vercel function
 python3 -m http.server --directory web            [static-only fallback]
