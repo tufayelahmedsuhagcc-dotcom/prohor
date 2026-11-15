@@ -2,6 +2,28 @@
 
 Notes describe the shipped application. Release dates are deliberately omitted; the git history is the timeline.
 
+## Unreleased — two more public data channels, and deep links that resolve
+
+- **NOAA GOES integral proton flux** (`/api/feeds?feed=proton-flux`): the `>=10 MeV` band, one
+  sample per five-minute bucket, following the spacecraft that produced the newest sample. Shown
+  on Environment as latest value, 24-hour peak, band and observation time in the source's own
+  `pfu`. The panel states that particle flux is not dose; no conversion is offered anywhere.
+- **NASA DONKI notification log** (`/api/feeds?feed=donki-events`): the last 14 days of public
+  notifications, typed and newest-first with source links, labelled as context rather than a
+  forecast. `NASA_API_KEY` is used when set; the public `DEMO_KEY` is hourly rate-limited, so a
+  30-minute TTL and the bundled snapshot are the normal path.
+- `server/feeds.mjs` now exports one `FEEDS` allowlist used by both `getFeed` and the HTTP
+  handler — they had drifted, and the new feeds were rejected with 400 until they shared it.
+  `normalizeProtons` rejects an empty flux value instead of reading it as zero, and picks the
+  current spacecraft by newest timestamp rather than by array position.
+- `npm run snapshot:feeds` regenerates both dated snapshots and writes nothing when an upstream
+  fails to parse. Both snapshots are in the offline precache (66 files).
+- `server/feeds.d.mts` gives the TypeScript tests real types instead of a `@ts-expect-error`.
+- **Deep links now resolve.** The app routed on the URL hash while already falling back to the
+  last path segment, but only six paths were rewritten on Vercel, so `prohor.health/environment`
+  and five other views returned 404 before the bundle loaded. Each view gets a rewrite, and a test
+  reads the route list out of `src/lib/context.tsx` so a new view cannot be added without one.
+
 ## Unreleased — media, deck and CI hardening
 
 - Recorded 30-second film and 3:49.5 judging film added under `public/media/` with SRT captions,

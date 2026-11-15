@@ -7,11 +7,17 @@ effectiveness.
 
 ## 2026-11-15 · latest continuous-integration run on `main`
 
-- Run: [actions/runs/43693654614](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43693654614)
-  on commit `53a9d01` — the same commit the `v3.0.0-submission` tag points at — **verify: success** (format, typecheck, 128 tests, build, committed-build
+- Run: [actions/runs/43711349754](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43711349754)
+  on commit `8ba7899` — **verify: success** (format, typecheck, 137 tests, build, committed-build
   parity, offline feed smoke) and **browser smoke: success** (Playwright workflows on `OFFLINE=1`
-  snapshots). The accessibility job is `workflow_dispatch`-only and was not dispatched, so it shows
-  as skipped — that is a scope setting, not a pass.
+  snapshots, every routed view including `environment`).
+- Previous green run: [actions/runs/43711219616](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43711219616)
+  on `be7f7c7` (the two new feeds, 136 tests); before that,
+  [actions/runs/43693654614](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43693654614)
+  on `53a9d01` — the commit the `v3.0.0-submission` tag points at — with 128 tests.
+- The accessibility job is `workflow_dispatch`-only and was not dispatched, so it shows as skipped
+  in every run above — that is a scope setting, not a pass. The axe sweep has not been re-run since
+  the Environment panels were added.
 - Rows below whose dates are earlier describe earlier revisions. They are kept on purpose so a
   reader can see what was measured when, rather than one merged number with no provenance.
 
@@ -245,6 +251,7 @@ The app is ready to run and review within its stated prototype scope. Passing th
 
 ## Correction
 
-The summary table once read **127** unit tests. That was a transcription error, not a lost test:
-`npm test` reports 128 across five files (engine 61, storage 24, hardening 21, research 11,
-feeds 11), re-measured on 2026-11-15 for this revision.
+The summary table once read **127** unit tests. That was a transcription error, not a lost test.
+`npm test` now reports **137** across five files (engine 61, storage 24, hardening 25, research 11,
+feeds 16), re-measured on 2026-11-15 after the two new feeds and the routing-contract test were
+added. The earlier 128 count (hardening 21, feeds 11) applied to `53a9d01`.
