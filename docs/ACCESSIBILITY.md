@@ -13,6 +13,11 @@ page states what was implemented, what was actually measured, and what remains u
   label and, in the atlas list, a numeric index. Colour is reinforcement, never the message.
 - **Charts have table equivalents.** Every chart is paired with a focusable, labelled data table;
   wide tables scroll inside their own region instead of widening the page.
+- **Dark mode is a switch, not a media query.** Light stays the default. The topbar switch and
+  the Settings row write the same preference (`prohor.theme.v1`, this device only) and both show
+  `aria-pressed`. The theme is applied to `<html data-theme>` before first paint by a small inline
+  script, so a dark reader never sees a white flash, and `color-scheme` is set so native controls,
+  scrollbars and form fields match. Printing always forces the light palette.
 - **Motion is optional.** A reduced-motion preference is persisted and respected by the replay
   and chart animations.
 - **Layout survives 320 px.** The narrow-width check is part of the browser suite, not an
@@ -53,6 +58,27 @@ handover, judges, settings, about — eleven in the navigation plus About.
   | Info text `#385e79` on `#eef5fa`          | 6.26:1                      | AA       |
   | White on accent `#146e53`                 | 6.20:1                      | AA       |
   | Chart series 1–4 on white                 | 6.65 / 6.01 / 6.54 / 6.61:1 | AA       |
+
+  The dark palette was measured the same way, from the same tokens, in both themes:
+
+  | Pair (token, not hex)          | Light                       | Dark                        |
+  | ------------------------------ | --------------------------- | --------------------------- |
+  | Text on panel                  | 12.77:1                     | 14.75:1                     |
+  | Text on page canvas            | 11.94:1                     | 16.06:1                     |
+  | Body text on panel             | 6.52:1                      | 9.69:1                      |
+  | Muted text on panel            | 5.30:1                      | 8.01:1                      |
+  | Link on panel                  | 6.20:1                      | 9.75:1                      |
+  | Muted text on tinted accent    | 4.75:1                      | 7.28:1                      |
+  | White on primary button        | 6.20:1                      | 5.35:1                      |
+  | Warning text on warning fill   | 6.46:1                      | 10.27:1                     |
+  | Info text on info fill         | 6.26:1                      | 9.22:1                      |
+  | Amber / blue / red status text | 5.95 / 6.21 / 5.98:1        | 8.28 / 7.91 / 6.96:1        |
+  | Chart series 1–4 on panel      | 6.65 / 6.01 / 6.54 / 6.61:1 | 9.11 / 8.28 / 7.91 / 7.06:1 |
+
+  These pairs are enforced by `tests/theme.test.ts`, which parses the tokens out of
+  `src/styles.css` and fails the build if any pair drops below 4.5:1, if a token the stylesheet
+  uses is undefined, if the two themes declare different token sets, or if a raw colour appears
+  outside the three palettes. Worst dark pair is 5.35:1; worst light pair is 4.75:1.
 
   Worst pair in the shipped theme is 4.84:1, above the 4.5:1 AA threshold for normal text. These
   are computed token pairs, not a screenshot-based sample, and they do not cover images or

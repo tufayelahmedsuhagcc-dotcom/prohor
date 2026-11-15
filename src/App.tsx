@@ -29,8 +29,11 @@ import {
   Info,
   Command,
   ArrowRight,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useProhor } from "./lib/context";
+import { useTheme } from "./lib/useTheme";
 import { Modal, Notice } from "./components/UI";
 import { LogModal } from "./components/LogModal";
 import { Overview, AtlasPanel } from "./pages/Overview";
@@ -120,6 +123,7 @@ export class ErrorBoundary extends Component<
 }
 export default function App() {
   const c = useProhor(),
+    { isDark, toggleTheme } = useTheme(),
     [menu, setMenu] = useState(false),
     [search, setSearch] = useState(false),
     [query, setQuery] = useState("");
@@ -347,6 +351,17 @@ export default function App() {
               {c.online ? <Wifi size={14} /> : <WifiOff size={14} />}
               <span>{c.online ? "Online" : "Offline"}</span>
             </span>
+            <button
+              className="icon-button theme-toggle"
+              onClick={toggleTheme}
+              aria-pressed={isDark}
+              aria-label={
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+              }
+              title={isDark ? "Light mode (default)" : "Dark mode"}
+            >
+              {isDark ? <Sun size={17} /> : <Moon size={17} />}
+            </button>
             <button
               className="button primary small"
               onClick={() => c.openLog()}

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Panel, SectionHead, Notice, Modal } from "../components/UI";
 import { useProhor } from "../lib/context";
+import { useTheme } from "../lib/useTheme";
 import {
   download,
   parseCsv,
@@ -25,6 +26,7 @@ import {
 import type { Reading, Store } from "../types";
 export function Settings() {
   const c = useProhor(),
+    { isDark, setTheme } = useTheme(),
     csvRef = useRef<HTMLInputElement>(null),
     jsonRef = useRef<HTMLInputElement>(null),
     [error, setError] = useState(""),
@@ -305,6 +307,20 @@ export function Settings() {
           >
             <ShieldCheck size={20} />
           </SectionHead>
+          <label className="toggle-field">
+            <div>
+              <strong>Dark mode</strong>
+              <p>
+                A darker interface for low-light use. Light is the default, and
+                the choice is stored on this device only.
+              </p>
+            </div>
+            <input
+              type="checkbox"
+              checked={isDark}
+              onChange={(e) => setTheme(e.target.checked ? "dark" : "light")}
+            />
+          </label>
           <label className="toggle-field">
             <div>
               <strong>Reduce motion</strong>

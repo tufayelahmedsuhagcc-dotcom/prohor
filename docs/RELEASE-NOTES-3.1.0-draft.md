@@ -44,8 +44,8 @@ new media surfaces and CI, no breaking API or data-schema change).
 
 ## Verification for this draft
 
-Run on 2026-11-12 in a Linux container (Node v20.20.2): `npm ci`, `npm run format:check`,
-`npm run typecheck`, `npm test` (128 passing), `npm run build` (precache 64 files), plus
+Run on 2026-11-12 in a Linux container (Node 22 on the later re-run): `npm ci`, `npm run format:check`,
+`npm run typecheck`, `npm test` (189 passing at the time of writing this draft's successor revision), `npm run build` (precache 66 files), plus
 `OFFLINE=1 npm start` asset smoke. Browser suites were **not** executed in that environment
 (Chromium cannot launch); see [docs/TEST-REPORT.md](TEST-REPORT.md). Do not paste these notes into a
 release until CI has run them.

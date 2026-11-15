@@ -252,6 +252,7 @@ The app is ready to run and review within its stated prototype scope. Passing th
 ## Correction
 
 The summary table once read **127** unit tests. That was a transcription error, not a lost test.
-`npm test` now reports **137** across five files (engine 61, storage 24, hardening 25, research 11,
-feeds 16), re-measured on 2026-11-15 after the two new feeds and the routing-contract test were
-added. The earlier 128 count (hardening 21, feeds 11) applied to `53a9d01`.
+`npm test` now reports **189** across six files (engine 61, storage 24, hardening 25, research 11,
+feeds 16, theme 52), re-measured on 2026-11-15 after the two new feeds, the routing-contract test and
+the theme suite were added. The 137 recorded for `8ba7899` and the 128 for `53a9d01` were correct
+when taken; both are left in place rather than rewritten.

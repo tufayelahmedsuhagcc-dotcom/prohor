@@ -4,7 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      // Applied before first paint so a dark reader never sees a white flash.
+      // Not analytics and not a tracker: it reads one local preference and stops.
+      (function () {
+        try {
+          var t = localStorage.getItem("prohor.theme.v1");
+          if (t === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.setAttribute("content", "#0f1613");
+          }
+        } catch (e) {
+          /* Storage blocked: the light default is correct. */
+        }
+      })();
+    </script>
     <meta
       name="description"
       content="PROHOR — personal health intelligence for deep-space crews. An offline-capable, non-diagnostic research prototype with transparent baselines and traceable NASA evidence."

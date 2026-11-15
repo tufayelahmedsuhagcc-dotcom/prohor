@@ -167,6 +167,63 @@ async def main():
         await page.get_by_role('button', name='Log a reading', exact=True).first.click()
         await axe('mobile reading dialog')
         await page.keyboard.press('Escape')
+        # ---------------------------------------------------------------- dark mode
+        # The switch itself, not a simulated OS preference: light is the default and
+        # dark is an explicit opt-in that must survive a reload.
+        await page.set_viewport_size({'width': 1440, 'height': 1050})
+        await go('overview')
+        await page.reload(wait_until='networkidle')
+        check('Light is the default before any interaction',
+              await page.evaluate('document.documentElement.dataset.theme') in (None, '', 'light'))
+        await page.get_by_role('button', name='Switch to dark mode', exact=True).click()
+        await page.wait_for_function("document.documentElement.dataset.theme === 'dark'")
+        check('The switch marks the document for the dark palette',
+              await page.evaluate('getComputedStyle(document.documentElement).colorScheme') == 'dark')
+        check('Dark panels use the dark surface, not white',
+              await page.locator('.panel').first.evaluate('(e) => getComputedStyle(e).backgroundColor') == 'rgb(22, 31, 27)')
+        check('Browser theme-color follows the theme',
+              await page.locator('meta[name="theme-color"]').get_attribute('content') == '#0f1613')
+        dark_variables = await page.evaluate("""() => {
+            const style = getComputedStyle(document.documentElement);
+            return Object.fromEntries(['text','muted','bg','panel','link','on-accent','accent-solid','amber','blue',
+            'red','warning-text','warning-soft','info-text','info-soft','control-line','chart-1','chart-2',
+            'chart-3','chart-4'].map(k => [k, style.getPropertyValue('--'+k).trim()]));
+        }""")
+        for label, fg, bg, minimum in [
+            ('Dark primary text', 'text', 'panel', 7),
+            ('Dark secondary text', 'muted', 'panel', 4.5),
+            ('Dark text on page canvas', 'text', 'bg', 7),
+            ('Dark primary action', 'on-accent', 'accent-solid', 4.5),
+            ('Dark review status', 'warning-text', 'warning-soft', 4.5),
+            ('Dark info status', 'info-text', 'info-soft', 4.5),
+            ('Dark form control boundary', 'control-line', 'panel', 3),
+            ('Dark chart series 1', 'chart-1', 'panel', 3),
+            ('Dark chart series 2', 'chart-2', 'panel', 3),
+            ('Dark chart series 3', 'chart-3', 'panel', 3),
+            ('Dark chart series 4', 'chart-4', 'panel', 3),
+        ]:
+            ratio = contrast(dark_variables[fg], dark_variables[bg])
+            check(label + ' contrast', ratio >= minimum, {'ratio': round(ratio, 2), 'minimum': minimum})
+        await axe('overview in dark mode')
+        await page.screenshot(path=str(SHOTS / 'overview-dark.png'), full_page=True)
+        await go('environment')
+        await page.get_by_role('heading', name='Solar energetic particles', exact=True).wait_for()
+        await page.screenshot(path=str(SHOTS / 'environment-dark.png'), full_page=True)
+        await go('judges')
+        await page.screenshot(path=str(SHOTS / 'judges-dark.png'), full_page=True)
+        await axe('judges in dark mode')
+        await page.reload(wait_until='networkidle')
+        check('The dark choice survives a reload',
+              await page.evaluate('document.documentElement.dataset.theme') == 'dark')
+        await go('settings')
+        await page.get_by_role('checkbox', name='Dark mode', exact=False).uncheck()
+        await page.wait_for_function('document.documentElement.dataset.theme === "light"')
+        check('Unchecking in Settings returns to the light default',
+              await page.locator('.panel').first.evaluate('(e) => getComputedStyle(e).backgroundColor') == 'rgb(255, 255, 255)')
+        await page.reload(wait_until='networkidle')
+        check('The light choice also survives a reload',
+              await page.evaluate('document.documentElement.dataset.theme') != 'dark')
+
         check('No uncaught JavaScript errors in theme checks', not errors, errors)
         await browser.close()
 

@@ -2,6 +2,25 @@
 
 Notes describe the shipped application. Release dates are deliberately omitted; the git history is the timeline.
 
+## Unreleased — dark mode
+
+- **A theme switch.** Light stays the default; the topbar switch and the Settings row toggle
+  `<html data-theme="dark">`, and the choice is persisted under its own `prohor.theme.v1` key. The
+  reading store, its schema version and its exports are untouched — a theme is not health data.
+- The theme is applied before first paint by a small inline script in `index.html` (no white flash),
+  `color-scheme` is set so native controls follow, and `@media print` resets the whole palette so
+  paper stays light whatever the screen shows.
+- **Every colour in `src/styles.css` is now a token.** 101 raw hex/rgb literals in the report,
+  judge, dossier, slide and landing sections were mapped onto semantic tokens, and six near
+  identical link greens plus four near identical surfaces were collapsed. This also fixed six
+  tokens that were referenced with light-only fallbacks but never defined (`--ink`, `--tint`,
+  `--accent`, `--watch-bg`, `--watch-line`, `--watch-ink`), which would have stayed light in dark
+  mode.
+- **Tested, not eyeballed:** `tests/theme.test.ts` (52 tests) covers the preference logic, storage
+  that throws, and then parses `src/styles.css` to assert that both themes declare the same token
+  set, that every `var(--x)` used is defined, that no raw colour exists outside the three palettes,
+  and that 20 real foreground/background pairs clear 4.5:1 in both themes. Worst dark pair 5.35:1.
+
 ## Unreleased — two more public data channels, and deep links that resolve
 
 - **NOAA GOES integral proton flux** (`/api/feeds?feed=proton-flux`): the `>=10 MeV` band, one

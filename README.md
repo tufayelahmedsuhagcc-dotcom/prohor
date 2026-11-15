@@ -65,20 +65,21 @@ come from, with no hard-coded display values. The demo _records_ are synthetic a
 the interface; the _arithmetic, parsing, hashing and feed handling_ are real code running on the real
 inputs named in each row.
 
-| View                    | Working behaviour                                                                                          |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Mission overview**    | Day- and profile-specific calculations, missingness, sparklines, and one contextual next step              |
-| **Health atlas**        | Interactive SVG anatomy and skeleton; six body systems, keyboard selection, explicit proxy limits          |
-| **Logbook**             | Validated entry, optional daily check-in, unit preservation, filters, pagination, deletion, CSV export     |
-| **Trends & baselines**  | Prior-day median/IQR, rule direction, coverage, source readings, and table alternatives to every chart     |
-| **Care plan**           | Routine prompts tied to the flagged system; done/deferred state persisted per crew, day and mode           |
-| **NASA evidence**       | The original OSD-575 CSV parsed in-browser, SHA-256 verified, four-subject comparison, source row numbers  |
-| **Space environment**   | Live NOAA planetary Kp feed with observation and retrieval times; cabin CO₂ stays a separate input         |
-| **Mission replay**      | Deterministic six-day scenario with play/pause/reset — labelled simulation, never "live telemetry"         |
-| **Crew handover**       | Review notes, text/JSON download, clipboard and print-to-PDF packet. No transmission                       |
-| **Data & settings**     | Atomic CSV import, validated JSON restore, backup, erased-data confirmation, reduced motion                |
-| **About & methodology** | Data boundaries, references, privacy, AI-assistance disclosure, scientific limitations                     |
-| **Judges' resources**   | Guided three-step tour, a four-page brief and four source-linked dossiers (open, download or take the ZIP) |
+| View                    | Working behaviour                                                                                                                   |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Mission overview**    | Day- and profile-specific calculations, missingness, sparklines, and one contextual next step                                       |
+| **Health atlas**        | Interactive SVG anatomy and skeleton; six body systems, keyboard selection, explicit proxy limits                                   |
+| **Logbook**             | Validated entry, optional daily check-in, unit preservation, filters, pagination, deletion, CSV export                              |
+| **Trends & baselines**  | Prior-day median/IQR, rule direction, coverage, source readings, and table alternatives to every chart                              |
+| **Care plan**           | Routine prompts tied to the flagged system; done/deferred state persisted per crew, day and mode                                    |
+| **NASA evidence**       | The original OSD-575 CSV parsed in-browser, SHA-256 verified, four-subject comparison, source row numbers                           |
+| **Space environment**   | Live NOAA planetary Kp feed with observation and retrieval times; cabin CO₂ stays a separate input                                  |
+| **Mission replay**      | Deterministic six-day scenario with play/pause/reset — labelled simulation, never "live telemetry"                                  |
+| **Crew handover**       | Review notes, text/JSON download, clipboard and print-to-PDF packet. No transmission                                                |
+| **Data & settings**     | Atomic CSV import, validated JSON restore, backup, erased-data confirmation, reduced motion                                         |
+| **Dark mode**           | Topbar switch and a Settings row; light is the default, the choice stays on this device, and printing always uses the light palette |
+| **About & methodology** | Data boundaries, references, privacy, AI-assistance disclosure, scientific limitations                                              |
+| **Judges' resources**   | Guided three-step tour, a four-page brief and four source-linked dossiers (open, download or take the ZIP)                          |
 
 ### The design decision that matters
 

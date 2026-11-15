@@ -95,6 +95,7 @@ is a privacy property of _where_ data goes, not a claim of secure clinical stora
 | `src/compute/feedValidation.ts` | Shape checks on NASA/NOAA payloads                                           | A failed validation surfaces as an error, never as substituted data                           |
 | `src/lib/storage.ts`            | localStorage schema, validation, CSV parse/export, backup, quota errors      | Atomic: a partially invalid import is rejected, not partly applied                            |
 | `src/lib/context.tsx`           | Single workspace state, mode/profile/day isolation                           | Demo baselines are never inherited by a local workspace                                       |
+| `src/lib/theme.ts`              | Light/dark preference, its own storage key, `<html data-theme>` application  | Not health data; never exported; storage failures fall back to light                          |
 | `src/lib/feeds.ts`              | Hook that prefers `/api/feeds`, falls back to the dated file                 | Failed network ⇒ visible "snapshot" label, not silence                                        |
 | `src/components/BodyAtlas.tsx`  | Interactive anatomy + skeleton, 6 systems                                    | Schematic illustration with proxy labels; not imaging                                         |
 | `src/pages/*`                   | Eleven routed view modules (twelve panels with the expanded health atlas)    | Each view owns its own limitation copy                                                        |

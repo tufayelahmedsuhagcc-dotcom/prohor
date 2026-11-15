@@ -7,6 +7,7 @@ Research/demo use with non-identifying data. This is not a secure clinical recor
 ## Data flow
 
 - Health readings, notes, preferences and routine actions stay in the browser's `localStorage` under `prohor.v3.workspace`.
+- The interface theme (light/dark) is stored separately under `prohor.theme.v1`. It is a display preference: it is not health data, it is not exported in CSV or JSON backups, and it is the only thing the pre-paint script in `index.html` reads.
 - The app's only backend endpoint fetches allowlisted public NASA/NOAA feeds. It accepts GET only; it has no health POST, sync or authentication endpoint.
 - The browser requests app assets and public-source responses from its same-origin server. It does not send health values in API query parameters.
 - NASA/NOAA requests contain no crew readings. Hosting providers can still observe normal network metadata, including IP addresses and access logs.
