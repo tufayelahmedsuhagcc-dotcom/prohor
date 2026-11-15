@@ -7,8 +7,8 @@ effectiveness.
 
 ## 2026-11-15 · latest continuous-integration run on `main`
 
-- Run: [actions/runs/43692837051](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43692837051)
-  on commit `a5b300b` — **verify: success** (format, typecheck, 128 tests, build, committed-build
+- Run: [actions/runs/43693654614](https://github.com/tufayelahmedsuhagcc-dotcom/prohor/actions/runs/43693654614)
+  on commit `53a9d01` — the same commit the `v3.0.0-submission` tag points at — **verify: success** (format, typecheck, 128 tests, build, committed-build
   parity, offline feed smoke) and **browser smoke: success** (Playwright workflows on `OFFLINE=1`
   snapshots). The accessibility job is `workflow_dispatch`-only and was not dispatched, so it shows
   as skipped — that is a scope setting, not a pass.
