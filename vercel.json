@@ -3,28 +3,107 @@
   "outputDirectory": "web",
   "framework": "vite",
   "functions": {
-    "api/feeds.mjs": { "includeFiles": "public/data/**", "maxDuration": 30 }
+    "api/feeds.mjs": {
+      "includeFiles": "public/data/**",
+      "maxDuration": 30
+    }
   },
   "headers": [
     {
       "source": "/sw.js",
-      "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     }
   ],
   "rewrites": [
-    { "source": "/app", "destination": "/index.html" },
-    { "source": "/app/:path*", "destination": "/index.html" },
-    { "source": "/methodology", "destination": "/index.html" },
-    { "source": "/limitations", "destination": "/index.html" },
-    { "source": "/data-sources", "destination": "/index.html" },
-    { "source": "/privacy", "destination": "/index.html" },
-    { "source": "/about", "destination": "/index.html" }
+    {
+      "source": "/judges",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/settings",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/handover",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/replay",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/environment",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/evidence",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/actions",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/trends",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/logbook",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/atlas",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/overview",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/app/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/methodology",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/limitations",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/data-sources",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/index.html"
+    }
   ]
 }

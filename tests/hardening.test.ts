@@ -123,6 +123,31 @@ describe("provenance-preserving CSV and explicit directional rules", () => {
   });
 });
 
+describe("deploy routing contract", () => {
+  it("serves every in-app view from a real path, not only from a hash", () => {
+    const source = readFileSync(
+      new URL("../src/lib/context.tsx", import.meta.url),
+      "utf8",
+    );
+    const block = source.slice(
+      source.indexOf("const routes = ["),
+      source.indexOf("];", source.indexOf("const routes = [")),
+    );
+    const routes = [...block.matchAll(/"([a-z-]+)"/g)].map((m) => m[1]);
+    expect(routes.length).toBeGreaterThan(0);
+    const vercel = JSON.parse(
+      readFileSync(new URL("../vercel.json", import.meta.url), "utf8"),
+    );
+    const sources = (vercel.rewrites as { source: string }[]).map(
+      (r) => r.source,
+    );
+    const missing = routes.filter((r) => !sources.includes(`/${r}`));
+    expect(missing).toEqual([]);
+    // The static host must not swallow the API namespace.
+    expect(sources.some((s) => s.startsWith("/api"))).toBe(false);
+  });
+});
+
 describe("bundled snapshot contracts", () => {
   const payload = (name: string) =>
     JSON.parse(
